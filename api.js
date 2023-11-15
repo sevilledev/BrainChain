@@ -10,7 +10,7 @@ const wss = new WebSocketServer({ port: 50001 })  // on production: 3001
 
 // Storage
 
-var games = genGame(40)
+var games = genGame(20)
 
 
 
@@ -41,13 +41,15 @@ wss.on('connection', (ws) => {
         if (req.command === 'INIT_PLYR') {
             ws.send(JSON.stringify({ command: 'INIT_PLYR', games }))
         } else if (req.command === 'JOIN_LOBBY') {
-            let game = []
+            let game = games.filter(g => g.id === req.id)[0]
             if (req.action === 'join') {
-                game = games.filter(g => g.id === req.id)[0]
                 game.players.usernames.push(req.username)
                 game.players.joined++
+            } else if (req.action === 'leave') {
+                game.players.usernames.splice(game.players.usernames.indexOf(req.username), 1)
+                game.players.joined--
             }
-            ws.send(JSON.stringify({ command: 'JOIN_LOBBY', action: req.action, game }))
+            ws.send(JSON.stringify({ command: 'JOIN_LOBBY', action: req.action, game, games }))
         }
     })
 

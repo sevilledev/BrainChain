@@ -32,6 +32,8 @@ export const App = () => {
                 STApp.lobby.props = {}
                 STApp.isInLobby = false
             } else if (res.action == 'join') {
+                STApp.lobby.props = {}
+                STApp.isInLobby = false
                 STApp.lobby.props = res.game
                 STApp.isInLobby = true
             }
@@ -39,9 +41,7 @@ export const App = () => {
     }
 
     useEffect(() => {
-        if (ws.readyState) {
-            setTimeout(() => ws.send(JSON.stringify({ command: 'INIT_PLYR' })), 500)
-        }
+        setTimeout(() => ws.send(JSON.stringify({ command: 'INIT_PLYR' })), 500)
     }, [])
 
 

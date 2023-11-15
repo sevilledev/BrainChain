@@ -144,20 +144,25 @@ export const Scene = ({ core }) => {
         const playerCount = players ? players.all : 0
         const radius = playerCount * 0.8
         const angle = 360 / playerCount
-        const coords = []
-        Array(playerCount).fill().map((p, index) => {
-            coords.push({
-                x: +(Math.cos(Math.PI / 2 + angle * (Math.PI / 180) * index) * radius).toFixed(3),
-                y: +(Math.sin(Math.PI / 2 + angle * (Math.PI / 180) * index) * radius).toFixed(3)
-            })
-        })
+
+
+        const radian = (index) => { return angle * (Math.PI / 180) * index }
+
+        const pos = (index) => {
+            return [
+                /* Pos X */ +(Math.cos(Math.PI / 2 + radian(index)) * radius).toFixed(3),
+                /* Pos Y */ 0,
+                /* Pos Z */ +(Math.sin(Math.PI / 2 + radian(index)) * radius).toFixed(3)
+            ]
+        }
 
 
         return (
             Array(playerCount).fill().map((player, index) => {
+                console.log(pos(index))
                 return <Player key={index}
-                    position={[coords[index].x, 0, coords[index].y]}
-                    rotation={[0, Math.PI - angle * (Math.PI / 180) * index, 0]}
+                    position={pos(index)}
+                    rotation={[0, Math.PI - radian(index), 0]}
                     player={players.joined > index ? players.usernames[index] : 'Waiting...'}
                 />
             })
