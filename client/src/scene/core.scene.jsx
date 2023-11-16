@@ -159,7 +159,6 @@ export const Scene = ({ core }) => {
 
         return (
             Array(playerCount).fill().map((player, index) => {
-                console.log(pos(index))
                 return <Player key={index}
                     position={pos(index)}
                     rotation={[0, Math.PI - radian(index), 0]}

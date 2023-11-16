@@ -13,7 +13,7 @@ export const Lobby = () => {
     return (
         <div className={sty.lobbyHitSlop}>
             <AnimatePresence>
-                {appSnap.uiName !== 'Home' && appSnap.isInLobby && <motion.div className={sty.lobby}
+                {appSnap.uiName !== 'Home' && appSnap.uiName !== 'Join' && appSnap.isInLobby && <motion.div className={sty.lobby}
                     initial={{ y: 70 }}
                     animate={{ y: 0 }}
                     exit={{ y: 70 }}

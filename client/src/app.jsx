@@ -27,7 +27,6 @@ export const App = () => {
             STApp.games = games
             STApp.filteredGames = games
         } else if (res.command === 'JOIN_LOBBY') {
-            STApp.uiName = 'Home'
             if (res.action === 'leave') {
                 STApp.lobby.props = {}
                 STApp.isInLobby = false
