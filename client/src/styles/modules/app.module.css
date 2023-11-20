@@ -288,16 +288,16 @@
 
 
 
-/* Lobby */
+/* Indicator */
 
-.lobbyHitSlop {
+.indicatorHitSlop {
     position: fixed;
     bottom: 20px;
     margin-left: 50%;
     transform: translateX(-50%);
 }
 
-.lobby {
+.indicator {
     align-items: center;
     height: 50px;
     gap: 20px;
@@ -308,14 +308,14 @@
     background-color: var(--thin-material);
 }
 
-.lobbyIc {
+.indicatorIc {
     align-items: center;
     justify-content: center;
     width: 30px;
     height: 30px;
 }
 
-.lobbyPlayers {
+.indicatorPlayers {
     align-items: center;
     gap: 1px;
 }

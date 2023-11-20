@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { useSnapshot } from 'valtio'
 import { Icon } from '../components/core.cmp'
-import { STApp } from '../stores/app.store'
+import { STGames, STProfile } from '../stores/app.store'
 
 import sty from '../styles/modules/app.module.css'
 
 
 export const Join = ({ ws }) => {
-    const appSnap = useSnapshot(STApp)
+    const SSProfile = useSnapshot(STProfile)
+    const SSGames = useSnapshot(STGames)
 
 
     const GameBg = () => {
@@ -45,17 +46,17 @@ export const Join = ({ ws }) => {
 
 
     const joinGame = (game) => {
-        ws.send(JSON.stringify({ command: 'JOIN_LOBBY', action: game.id === appSnap.lobby.props.id ? 'leave' : 'join', id: game.id, username: appSnap.profile.username }))
+        ws.send(JSON.stringify({ command: 'JOIN_GAME', action: game.id === SSProfile.activeGameId ? 'leave' : 'join', id: game.id, name: SSProfile.name, color: SSProfile.color }))
     }
 
 
     return (
         <div className={sty.join}>
             <div className={sty.games}>
-                {appSnap.filteredGames.map((game) => {
+                {SSGames.filtered.map((game) => {
                     return (
                         <div className={sty.gameWrapper} key={game.id}>
-                            {appSnap.lobby.props.id === game.id && <GameBg />}
+                            {SSProfile.activeGameId === game.id && <GameBg />}
                             <div className={sty.game} onClick={() => joinGame(game)}>
                                 <div className={sty.gameHeader}>
                                     <Icon name={game.topic.icon} size={34} color='--system-yellow' />

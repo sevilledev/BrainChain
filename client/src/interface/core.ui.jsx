@@ -1,17 +1,17 @@
 import { useSnapshot } from 'valtio'
 import { motion } from 'framer-motion'
-import { STApp } from '../stores/app.store'
+import { STUI } from '../stores/app.store'
 
 import { Home } from './home.ui'
 import { Join } from './join.ui'
 import { Controls } from './controls.ui'
-import { Lobby } from './lobby.ui'
+import { Indicator } from './indicator.ui'
 
 import sty from '../styles/modules/app.module.css'
 
 
 const UISwap = (props) => {
-    const appSnap = useSnapshot(STApp)
+    const SSUI = useSnapshot(STUI)
 
     const uiSwapVt = {
         in: { opacity: 1, scale: 1 },
@@ -21,10 +21,10 @@ const UISwap = (props) => {
 
     return props.children.map((ui) => {
         return (
-            <motion.div className={sty.uiSwap} key={ui.props.uiName}
-                style={ui.props.uiName !== 'Home' && ui.props.uiName === appSnap.uiName && { display: 'flex' }}
+            <motion.div className={sty.uiSwap} key={ui.props.name}
+                style={ui.props.name !== 'Home' && ui.props.name === SSUI.name && { display: 'flex' }}
                 variants={uiSwapVt}
-                animate={ui.props.uiName === appSnap.uiName ? 'in' : 'out'}
+                animate={ui.props.name === SSUI.name ? 'in' : 'out'}
                 transition={{ ease: 'easeInOut', duration: 0.6 }}
             >
                 {ui}
@@ -38,11 +38,11 @@ export const Interface = ({ ws }) => {
     return (
         <>
             <UISwap>
-                <Home uiName='Home' />
-                <Join uiName='Join' ws={ws} />
+                <Home name='Home' />
+                <Join name='Join' ws={ws} />
             </UISwap>
             <Controls />
-            <Lobby />
+            <Indicator />
         </>
     )
 }

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { STApp } from './stores/app.store'
+import { STGames, STInLobby, STIndicator, STProfile } from './stores/app.store'
 
 import { Scene } from './scene/core.scene'
 import { Interface } from './interface/core.ui'
@@ -19,23 +19,27 @@ export const App = () => {
         console.log(res)
 
         if (res.command === 'INIT_PLYR') {
+            Object.assign(STProfile, res.user)
+        } else if (res.command === 'JOIN_GAME') {
+            if (res.action == 'join') {
+                STProfile.activeGameId = res.game.id
+                STInLobby.is = false
+                Object.assign(STIndicator, res.game)
+            } else if (res.action === 'leave') {
+                STProfile.activeGameId = ''
+                STInLobby.is = true
+                Object.assign(STIndicator, {})
+            }
+        } else if (res.command === 'UPDT_GAME') {
+            Object.assign(STIndicator, res.game)
+        } else if (res.command === 'UPDT_GAMES') {
             let games = res.games
                 .sort((a, b) => a.token - b.token)
                 .sort((a, b) => a.duration - b.duration)
                 .sort((a, b) => (a.players.all - a.players.joined) - (b.players.all - b.players.joined))
                 .sort((a, b) => a.players.all - b.players.all)
-            STApp.games = games
-            STApp.filteredGames = games
-        } else if (res.command === 'JOIN_LOBBY') {
-            if (res.action === 'leave') {
-                STApp.lobby.props = {}
-                STApp.isInLobby = false
-            } else if (res.action == 'join') {
-                STApp.lobby.props = {}
-                STApp.isInLobby = false
-                STApp.lobby.props = res.game
-                STApp.isInLobby = true
-            }
+            STGames.all = games
+            STGames.filtered = games
         }
     }
 

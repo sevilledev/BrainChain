@@ -1,15 +1,14 @@
 import { proxy } from 'valtio'
 
-export const STApp = proxy({
-    uiName: 'Home',
-    profile: {
-        isActive: false,
-        username: 'Ariana Grande',
-        balance: 780
-    },
-    isInLobby: false,
-    lobby: { props: {}, players: [] },
-    games: [],
-    filteredGames: [],
-    filters: { topic: 'All', players: 'All', duration: 'All', token: 'All' }
-})
+
+export const STUI = proxy({ name: 'Home' })
+
+export const STProfile = proxy({ isGuest: true, isInLobby: true, activeGameId: '', color: '', name: '', balance: 0 })
+
+export const STFilters = proxy({ topic: 'All', players: 'All', duration: 'All', token: 'All' })
+
+export const STIndicator = proxy({ id: '', topic: '', duration: 0, token: 0, players: { all: 0, joined: 0, list: [] } })
+
+export const STGames = proxy({ all: [], filtered: [] })
+
+export const STInLobby = proxy({ is: true })
