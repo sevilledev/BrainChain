@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import { STUI } from '../stores/app.store'
 
 import { Home } from './home.ui'
+import { Play } from './play.ui'
 import { Join } from './join.ui'
 import { Controls } from './controls.ui'
 import { Indicator } from './indicator.ui'
@@ -39,6 +40,7 @@ export const Interface = ({ ws }) => {
         <>
             <UISwap>
                 <Home name='Home' />
+                <Play name='Play' ws={ws} />
                 <Join name='Join' ws={ws} />
             </UISwap>
             <Controls />

@@ -39,7 +39,7 @@ export const Controls = () => {
             players = playersCount.at(1 + playersCount.indexOf(SSFilters.players) - playersCount.length)
             STFilters.players = players
         } else if (filter === 'duration') {
-            const durations = ['All', 5, 10, 15, 20]
+            const durations = ['All', 5, 10, 15]
             duration = durations.at(1 + durations.indexOf(SSFilters.duration) - durations.length)
             STFilters.duration = duration
         } else if (filter === 'token') {
@@ -86,8 +86,7 @@ export const Controls = () => {
                 </div>
 
                 <AnimatePresence>
-                    {SSUI.name === 'Join' && <motion.div className={sty.filters}
-                    >
+                    {SSUI.name === 'Join' && <motion.div className={sty.filters}>
                         <motion.div className={sty.filter}
                             variants={filterVt(15, 0)}
                             initial='initial'

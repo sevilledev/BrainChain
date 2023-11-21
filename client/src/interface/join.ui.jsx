@@ -45,8 +45,8 @@ export const Join = ({ ws }) => {
     }
 
 
-    const joinGame = (game) => {
-        ws.send(JSON.stringify({ command: 'JOIN_GAME', action: game.id === SSProfile.activeGameId ? 'leave' : 'join', id: game.id, name: SSProfile.name, color: SSProfile.color }))
+    const actGame = (game) => {
+        ws.send(JSON.stringify({ command: game.id === SSProfile.activeGameId ? 'LEAVE_GAME' : 'JOIN_GAME', id: game.id, name: SSProfile.name, color: SSProfile.color }))
     }
 
 
@@ -57,7 +57,7 @@ export const Join = ({ ws }) => {
                     return (
                         <div className={sty.gameWrapper} key={game.id}>
                             {SSProfile.activeGameId === game.id && <GameBg />}
-                            <div className={sty.game} onClick={() => joinGame(game)}>
+                            <div className={sty.game} onClick={() => actGame(game)}>
                                 <div className={sty.gameHeader}>
                                     <Icon name={game.topic.icon} size={34} color='--system-yellow' />
                                     <div className={sty.gameToken}>

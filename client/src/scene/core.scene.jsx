@@ -138,7 +138,7 @@ export const Scene = ({ core }) => {
     const Players = () => {
         const SSIndicator = useSnapshot(STIndicator)
 
-        const players = SSIndicator.players
+        const players = SSIndicator.id ? SSIndicator.players : 0
         const playerCount = players ? players.all : 0
         const radius = playerCount * 0.8
         const angle = 360 / playerCount

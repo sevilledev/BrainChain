@@ -50,7 +50,7 @@ exports.genColor = () => {
 
 exports.genGame = (count = 20) => {
     let games = []
-    const durations = [5, 10, 15, 20]
+    const durations = [5, 10, 15]
     const tokens = [20, 50, 100, 150, 200]
     const names = ['Salvador Johnston', 'Wallace Long', 'Howard Beck', 'Alfredo Curtis', 'Stephen Williamson', 'Logan Carter', 'Travis Stevens', 'Derrick Kuhn', 'Kylie Grant', 'Jonathan Gordon']
     const topics = [

@@ -21,22 +21,20 @@ export const App = () => {
         if (res.command === 'INIT_PLYR') {
             Object.assign(STProfile, res.user)
         } else if (res.command === 'JOIN_GAME') {
-            if (res.action == 'join') {
-                STProfile.activeGameId = res.game.id
-                STInLobby.is = false
-                Object.assign(STIndicator, res.game)
-            } else if (res.action === 'leave') {
-                STProfile.activeGameId = ''
-                STInLobby.is = true
-                Object.assign(STIndicator, {})
-            }
+            STProfile.activeGameId = res.game.id
+            STInLobby.is = false
+            Object.assign(STIndicator, res.game)
+        } else if (res.command === 'LEAVE_GAME') {
+            STProfile.activeGameId = ''
+            STInLobby.is = true
+            Object.assign(STIndicator, { id: '', topic: { name: 'Anatomy', icon: 'body' }, duration: 5, token: 20, players: { all: 2, joined: 0, list: [] } })
         } else if (res.command === 'UPDT_GAME') {
             Object.assign(STIndicator, res.game)
         } else if (res.command === 'UPDT_GAMES') {
             let games = res.games
                 .sort((a, b) => a.token - b.token)
                 .sort((a, b) => a.duration - b.duration)
-                .sort((a, b) => (a.players.all - a.players.joined) - (b.players.all - b.players.joined))
+                // .sort((a, b) => (a.players.all - a.players.joined) - (b.players.all - b.players.joined))
                 .sort((a, b) => a.players.all - b.players.all)
             STGames.all = games
             STGames.filtered = games

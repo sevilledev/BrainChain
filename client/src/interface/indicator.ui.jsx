@@ -11,13 +11,12 @@ export const Indicator = () => {
     const SSInLobby = useSnapshot(STInLobby)
     const SSIndicator = useSnapshot(STIndicator)
 
-    console.log('ind rendered')
-
+    const exceptions = ['Home', 'Play', 'Join']
 
     return (
         <div className={sty.indicatorHitSlop}>
             <AnimatePresence>
-                {SSUI.name !== 'Home' && SSUI.name !== 'Join' && !SSInLobby.is && <motion.div className={sty.indicator}
+                {!exceptions.includes(SSUI.name) && !SSInLobby.is && <motion.div className={sty.indicator}
                     initial={{ y: 70 }}
                     animate={{ y: 0 }}
                     exit={{ y: 70 }}

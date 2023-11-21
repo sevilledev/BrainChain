@@ -12,7 +12,7 @@ const wss = new WebSocketServer({ port: 50001 })  // on production: 3001
 
 const lobby = {}
 const rooms = {}
-var games = genGame(20)
+var games = genGame(4)
 
 
 
@@ -40,6 +40,8 @@ const sendRoom = (id, obj) => {
 const init = () => {
     console.clear()
     console.log(`\x1b[33mApp running on 🔥\n\n\x1b[36m  http://localhost:${PORT}  \x1b[0m\n`); wss.on('error', console.error)
+
+    // For generated games
     games.forEach((game) => rooms[game.id] = {})
 }
 
@@ -71,25 +73,60 @@ wss.on('connection', (ws) => {
             console.log(`[${lobby[userID].name}]\x1b[1;32m Joined\x1b[0m 🥳`)
         } else if (req.command === 'JOIN_GAME') {
             let game = games.filter(g => g.id === req.id)[0]
-            if (req.action === 'join') {
-                if (lobby[userID].activeGameId) {
-                    const activeGame = games.filter(g => g.id === lobby[userID].activeGameId)[0]
+
+            if (lobby[userID].activeGameId) {
+                const activeGame = games.filter(g => g.id === lobby[userID].activeGameId)[0]
+
+                if (activeGame.players.joined === 1) {
+                    delete rooms[activeGame.id]
+                    games = games.filter(g => g.id !== activeGame.id)
+                } else {
                     activeGame.players.list = activeGame.players.list.filter(p => p.name !== req.name)
                     activeGame.players.joined--
                     delete rooms[lobby[userID].activeGameId][userID]
-                    lobby[userID].activeGameId = ''
                 }
-                lobby[userID].activeGameId = game.id
-                rooms[req.id][userID] = ws
-                game.players.list.push({ name: req.name, color: req.color })
-                game.players.joined++
-            } else if (req.action === 'leave') {
-                game.players.list = game.players.list.filter(p => p.name !== req.name)
-                game.players.joined--
-                delete rooms[lobby[userID].activeGameId][userID]
+
                 lobby[userID].activeGameId = ''
             }
-            ws.send(JSON.stringify({ command: 'JOIN_GAME', action: req.action, game, games }))
+
+            lobby[userID].activeGameId = game.id
+            rooms[req.id][userID] = ws
+            game.players.list.push({ name: req.name, color: req.color })
+            game.players.joined++
+
+            ws.send(JSON.stringify({ command: 'JOIN_GAME', game }))
+            sendRoom(lobby[userID].activeGameId, { command: 'UPDT_GAME', game })
+            sendLobby({ command: 'UPDT_GAMES', games })
+        } else if (req.command === 'LEAVE_GAME') {
+            let game = games.filter(g => g.id === req.id)[0]
+
+            if (game.players.joined === 1) {
+                delete rooms[game.id]
+                games = games.filter(g => g.id !== game.id)
+            } else {
+                game.players.list = game.players.list.filter(p => p.name !== req.name)
+                game.players.joined--
+                delete rooms[game.id][userID]
+            }
+
+            lobby[userID].activeGameId = ''
+
+            ws.send(JSON.stringify({ command: 'LEAVE_GAME', game }))
+            sendRoom(lobby[userID].activeGameId, { command: 'UPDT_GAME', game })
+            sendLobby({ command: 'UPDT_GAMES', games })
+        } else if (req.command === 'CREATE_GAME') {
+            const game = {
+                id: genRandom(8, 10),
+                topic: req.game.topic,
+                duration: req.game.duration,
+                token: req.game.token,
+                players: { all: req.game.players.all, joined: 1, list: [{ name: req.user.name, color: req.user.color }] }
+            }
+            games.push(game)
+            lobby[userID].activeGameId = game.id
+            rooms[game.id] = {}
+            rooms[game.id][userID] = ws
+            ws.send(JSON.stringify({ command: 'JOIN_GAME', game }))
             sendRoom(lobby[userID].activeGameId, { command: 'UPDT_GAME', game })
             sendLobby({ command: 'UPDT_GAMES', games })
         }

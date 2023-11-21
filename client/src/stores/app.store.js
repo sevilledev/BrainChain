@@ -7,7 +7,7 @@ export const STProfile = proxy({ isGuest: true, isInLobby: true, activeGameId: '
 
 export const STFilters = proxy({ topic: 'All', players: 'All', duration: 'All', token: 'All' })
 
-export const STIndicator = proxy({ id: '', topic: '', duration: 0, token: 0, players: { all: 0, joined: 0, list: [] } })
+export const STIndicator = proxy({ id: '', topic: { name: 'Anatomy', icon: 'body' }, duration: 5, token: 20, players: { all: 2, joined: 0, list: [] } })
 
 export const STGames = proxy({ all: [], filtered: [] })
 
