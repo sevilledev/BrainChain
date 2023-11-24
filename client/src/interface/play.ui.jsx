@@ -152,8 +152,12 @@ export const Play = ({ ws }) => {
 
             <div className={sty.playBtns}>
                 {!SSProfile.activeGameId
-                    ? <button className={sty.playBtn} onClick={() => createGame()}>Play</button>
-                    : <button className={sty.leaveBtn} onClick={() => leaveGame()}>Leave</button>
+                    ? <button className={sty.playBtn} onClick={() => createGame()}>
+                        <h2 className={sty.playBtnLbl}>Play</h2>
+                    </button>
+                    : <button className={sty.leaveBtn} onClick={() => leaveGame()}>
+                        <h2 className={sty.leaveBtnLbl}>Leave</h2>
+                    </button>
                 }
             </div>
         </div>

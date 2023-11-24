@@ -21,16 +21,23 @@ export const Indicator = () => {
                     animate={{ y: 0 }}
                     exit={{ y: 70 }}
                     transition={{ ease: 'easeInOut', duration: 0.5 }}
+                    onClick={() => STUI.name = 'Play'}
                 >
-                    <div className={sty.indicatorIc}>
+                    <div className={sty.indicatorTopicIc}>
                         <Icon name={SSIndicator.topic.icon} size={30} color='--system-yellow' />
                     </div>
                     <div className={sty.indicatorPlayers}>
                         {Array(SSIndicator.players.all).fill().map((player, index) => {
                             return (
                                 index < SSIndicator.players.joined
-                                    ? <Icon name='person' size={30} color='--primary-tint' key={index} />
-                                    : <Icon name='person-o' size={30} color='--primary-tint' key={index} />
+                                    ? <div className={sty.indicatorPlayerIc} key={index}>
+                                        <Icon name='person' size={30} color='--primary-tint' />
+                                        <div className='tooltip tooltipTop'>{SSIndicator.players.list[index].name}</div>
+                                    </div>
+                                    : <div className={sty.indicatorPlayerIc} key={index}>
+                                        <Icon name='person-o' size={30} color='--primary-tint' />
+                                        <div className='tooltip tooltipTop'>Waiting...</div>
+                                    </div>
                             )
 
                         })}

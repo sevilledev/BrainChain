@@ -288,30 +288,36 @@
 .playBtns {
     align-items: center;
     justify-content: center;
+    border-radius: 25px;
+    background-color: var(--thin-material);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
 }
 
 .playBtn {
     height: 50px;
     padding: 0 40px;
-    border: 2px solid var(--system-green);
     border-radius: 25px;
-    background-color: #30D15832;
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    background-color: #30D1582B;
+}
+
+.playBtnLbl {
     font-size: 30px;
     font-weight: 700;
+    color: var(--system-green);
 }
 
 .leaveBtn {
     height: 50px;
     padding: 0 40px;
-    border: 2px solid var(--system-red);
     border-radius: 25px;
-    background-color: #FF453A32;
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    background-color: #FF453A2B;
+}
+
+.leaveBtnLbl {
     font-size: 30px;
     font-weight: 700;
+    color: var(--system-red);
 }
 
 
@@ -362,7 +368,7 @@
     border-radius: 14px;
 }
 
-.game {
+.gameCard {
     position: absolute;
     flex-direction: column;
     align-items: center;
@@ -378,7 +384,7 @@
     transition: all .2s ease-in-out;
 }
 
-.game:hover {
+.gameCard:hover {
     background-color: var(--ultrathin-material);
     transition: all .2s ease-in-out;
 }
@@ -457,9 +463,10 @@
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     background-color: var(--thin-material);
+    cursor: pointer;
 }
 
-.indicatorIc {
+.indicatorTopicIc {
     align-items: center;
     justify-content: center;
     width: 30px;
@@ -469,4 +476,26 @@
 .indicatorPlayers {
     align-items: center;
     gap: 1px;
+}
+
+.indicatorPlayerIc {
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+
+/* Game */
+
+.game {
+    position: absolute;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    background-color: var(--thin-material);
+    overflow-y: hidden;
 }

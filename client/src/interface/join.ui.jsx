@@ -57,7 +57,7 @@ export const Join = ({ ws }) => {
                     return (
                         <div className={sty.gameWrapper} key={game.id}>
                             {SSProfile.activeGameId === game.id && <GameBg />}
-                            <div className={sty.game} onClick={() => actGame(game)}>
+                            <div className={sty.gameCard} onClick={() => actGame(game)}>
                                 <div className={sty.gameHeader}>
                                     <Icon name={game.topic.icon} size={34} color='--system-yellow' />
                                     <div className={sty.gameToken}>
