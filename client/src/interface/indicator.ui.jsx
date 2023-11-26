@@ -1,6 +1,6 @@
 import { useSnapshot } from 'valtio'
 import { AnimatePresence, motion } from 'framer-motion'
-import { STInLobby, STIndicator, STUI } from '../stores/app.store'
+import { STIndicator, STUI } from '../stores/app.store'
 import { Icon } from '../components/core.cmp'
 
 import sty from '../styles/modules/app.module.css'
@@ -8,7 +8,6 @@ import sty from '../styles/modules/app.module.css'
 
 export const Indicator = () => {
     const SSUI = useSnapshot(STUI)
-    const SSInLobby = useSnapshot(STInLobby)
     const SSIndicator = useSnapshot(STIndicator)
 
     const exceptions = ['Home', 'Play', 'Join']
@@ -16,7 +15,7 @@ export const Indicator = () => {
     return (
         <div className={sty.indicatorHitSlop}>
             <AnimatePresence>
-                {!exceptions.includes(SSUI.name) && !SSInLobby.is && <motion.div className={sty.indicator}
+                {!exceptions.includes(SSUI.name) && SSUI.showIndicator && <motion.div className={sty.indicator}
                     initial={{ y: 70 }}
                     animate={{ y: 0 }}
                     exit={{ y: 70 }}

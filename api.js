@@ -13,7 +13,7 @@ const wss = new WebSocketServer({ port: 50001 })  // on production: 3001
 const lobby = {}
 const rooms = {}
 const liveGames = {}
-var games = genGame(20)
+var games = genGame(50)
 
 
 

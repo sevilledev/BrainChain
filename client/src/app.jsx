@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { STGame, STGames, STInLobby, STIndicator, STProfile, STScene, STUI } from './stores/app.store'
+import { STGame, STGames, STIndicator, STProfile, STScene, STUI } from './stores/app.store'
 
 import { Scene } from './scene/core.scn'
 import { Interface } from './interface/core.ui'
@@ -22,18 +22,21 @@ export const App = () => {
             Object.assign(STProfile, res.user)
         } else if (res.command === 'JOIN_GAME') {
             STProfile.activeGameId = res.game.id
-            STInLobby.is = false
+            STUI.showIndicator = true
             Object.assign(STIndicator, res.game)
             STScene.name = 'Game'
         } else if (res.command === 'LEAVE_GAME') {
             STProfile.activeGameId = ''
-            STInLobby.is = true
+            STUI.showIndicator = false
             Object.assign(STIndicator, { id: '', topic: { name: 'Anatomy', icon: 'body' }, duration: 5, token: 20, players: { all: 2, joined: 0, list: [] } })
             STScene.name = 'Lobby'
         } else if (res.command === 'UPDT_GAME') {
             Object.assign(STIndicator, res.game)
         } else if (res.command === 'START_GAME') {
             STGame.quiz = res.quiz
+            STGame.answers = Array(res.quiz.length).fill({})
+            STUI.showIndicator = false
+            STUI.showControls = false
             STUI.name = 'Game'
         } else if (res.command === 'UPDT_GAMES') {
             let games = res.games

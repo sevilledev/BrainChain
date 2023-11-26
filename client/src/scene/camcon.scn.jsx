@@ -1,27 +1,54 @@
 import { useRef } from 'react'
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import { useSnapshot } from 'valtio'
-import { STInLobby, STIndicator } from '../stores/app.store'
+import { STIndicator, STUI } from '../stores/app.store'
 
 
 export const CamCon = ({ core }) => {
     const SSIndicator = useSnapshot(STIndicator)
-    const SSInLobby = useSnapshot(STInLobby)
+    const SSUI = useSnapshot(STUI)
 
     const camera = useRef()
     const controls = useRef()
 
+    const cameraOptions = {
+        fov: 30,
+        near: 0.01,
+        far: 1500
+    }
+
     const orbitOptions = {
         enablePan: false,
-        autoRotate: !SSInLobby.is,
-        maxPolarAngle: Math.PI / 2.2,
-        minPolarAngle: Math.PI / 2.2
+        autoRotate: SSIndicator.id && SSUI.name !== 'Game',
+        maxPolarAngle: SSUI.name === 'Game' ? Math.PI : Math.PI / 2.2,
+        minPolarAngle: SSUI.name === 'Game' ? 0 : Math.PI / 2.2
+    }
+
+
+    const getPos = () => {
+        let pos = [0, 0, 0]
+
+        if (core.isMobile) {
+            pos = [0, 1, 80]
+        } else {
+            if (SSIndicator.id) {
+                if (SSUI.name === 'Game') {
+                    pos = [0, 10 + SSIndicator.players.all * 2.5, 0]
+                } else {
+                    pos = [0, 1, 10 + SSIndicator.players.all]
+                }
+            } else {
+                pos = [0, 1, 12]
+            }
+        }
+
+        return pos
     }
 
 
     return (
         <>
-            <PerspectiveCamera ref={camera} position={[0, 1, core.isMobile ? 80 : SSInLobby.is ? 12 : 10 + SSIndicator.players.all]} fov={30} near={0.01} far={1500} makeDefault />
+            <PerspectiveCamera ref={camera} position={getPos()} {...cameraOptions} makeDefault />
             <OrbitControls ref={controls} {...orbitOptions} />
         </>
     )

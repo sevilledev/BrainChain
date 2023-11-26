@@ -75,7 +75,7 @@ export const Play = ({ ws }) => {
     }
 
     const createGame = () => {
-        ws.send(JSON.stringify({ command: 'CREATE_GAME', game: { ...SSIndicator }, user: { name: SSProfile.name, color: SSProfile.color } }))
+        ws.send(JSON.stringify({ command: 'CREATE_GAME', game: { ...SSIndicator }, user: { name: STProfile.name, color: STProfile.color } }))
     }
 
     const leaveGame = () => {

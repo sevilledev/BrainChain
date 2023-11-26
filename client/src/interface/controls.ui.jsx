@@ -16,7 +16,7 @@ export const Controls = () => {
     const inActiveNavs = useAnimation()
 
     const navs = ['Play', 'Join', 'Discover', 'Tournaments', 'Community']
-    
+
 
     const filterVt = (margin = 10, index) => {
         return {
@@ -62,98 +62,107 @@ export const Controls = () => {
 
 
     return (
-        <div className={sty.controls}>
-            <div className={sty.profile}>
-                <Icon name='person-circle-o' size={30} color='--white' />
-                {SSProfile.isGuest && <h5 className={sty.profileLbl}>Guest</h5>}
-            </div>
-            <div className={sty.navbar}>
-                <div className={sty.menu}>
-                    <div className={sty.menuIc} onClick={() => STUI.name = 'Home'} >
-                        <Icon name='grid' size={24} color='--primary-tint' />
+        <div className={sty.controlsHitSlop}>
+            <AnimatePresence>
+                {SSUI.showControls && <motion.div className={sty.controls}
+                    initial={{ y: -80 }}
+                    animate={{ y: 0 }}
+                    exit={{ y: -80 }}
+                    transition={{ ease: 'easeInOut', duration: 0.5, delay: 0.5 }}
+                >
+                    <div className={sty.profile}>
+                        <Icon name='person-circle-o' size={30} color='--white' />
+                        {SSProfile.isGuest && <h5 className={sty.profileLbl}>Guest</h5>}
                     </div>
-                    {navs.map((item) => {
-                        return (
-                            <motion.div className={sty.menuItem} key={item}
-                                onClick={() => STUI.name = item}
-                                animate={SSUI.name !== item && inActiveNavs}
-                                transition={{ ease: 'easeInOut', duration: 0.6 }}
-                            >
-                                {item}
-                            </motion.div>
-                        )
-                    })}
-                </div>
+                    <div className={sty.navbar}>
+                        <div className={sty.menu}>
+                            <div className={sty.menuIc} onClick={() => STUI.name = 'Home'} >
+                                <Icon name='grid' size={24} color='--primary-tint' />
+                            </div>
+                            {navs.map((item) => {
+                                return (
+                                    <motion.div className={sty.menuItem} key={item}
+                                        onClick={() => STUI.name = item}
+                                        animate={SSUI.name !== item && inActiveNavs}
+                                        transition={{ ease: 'easeInOut', duration: 0.6 }}
+                                    >
+                                        {item}
+                                    </motion.div>
+                                )
+                            })}
+                        </div>
 
-                <AnimatePresence>
-                    {SSUI.name === 'Join' && <motion.div className={sty.filters}>
-                        <motion.div className={sty.filter}
-                            variants={filterVt(15, 0)}
-                            initial='initial'
-                            animate='animate'
-                            exit='exit'
-                            onClick={() => changeFilter('topic')}
-                        >
-                            <div className={sty.filterIc}>
-                                <Icon name='book' size={24} color='--system-yellow' />
-                            </div>
-                            <div className={sty.filterBody}>
-                                <h4 className={sty.filterTtl}>Topic</h4>
-                                <h5 className={sty.filterSbtl}>{SSFilters.topic}</h5>
-                            </div>
-                        </motion.div>
-                        <motion.div className={sty.filter}
-                            variants={filterVt(10, 1)}
-                            initial='initial'
-                            animate='animate'
-                            exit='exit'
-                            onClick={() => changeFilter('players')}
-                        >
-                            <div className={sty.filterIc}>
-                                <Icon name='person' size={22} color='--primary-tint' />
-                            </div>
-                            <div className={sty.filterBody}>
-                                <h4 className={sty.filterTtl}>Players</h4>
-                                <h5 className={sty.filterSbtl}>{`${SSFilters.players}${SSFilters.players !== 'All' ? ' players' : ''}`}</h5>
-                            </div>
-                        </motion.div>
-                        <motion.div className={sty.filter}
-                            variants={filterVt(10, 2)}
-                            initial='initial'
-                            animate='animate'
-                            exit='exit'
-                            onClick={() => changeFilter('duration')}
-                        >
-                            <div className={sty.filterIc}>
-                                <Icon name='timer-o' size={24} color='--primary-label' />
-                            </div>
-                            <div className={sty.filterBody}>
-                                <h4 className={sty.filterTtl}>Duration</h4>
-                                <h5 className={sty.filterSbtl}>{`${SSFilters.duration}${SSFilters.duration !== 'All' ? ' min' : ''}`}</h5>
-                            </div>
-                        </motion.div>
-                        <motion.div className={sty.filter}
-                            variants={filterVt(10, 3)}
-                            initial='initial'
-                            animate='animate'
-                            exit='exit'
-                            onClick={() => changeFilter('token')}
-                        >
-                            <div className={sty.filterIc}>
-                                <Icon name='brain-token' size={22} color='--system-pink' />
-                            </div>
-                            <div className={sty.filterBody}>
-                                <h4 className={sty.filterTtl}>Token</h4>
-                                <h5 className={sty.filterSbtl}>{`${SSFilters.token}${SSFilters.token !== 'All' ? ' token' : ''}`}</h5>
-                            </div>
-                        </motion.div>
-                    </motion.div>}
-                </AnimatePresence>
-            </div>
-            <div className={sty.balance}>
-                <h5 className={sty.balanceLbl}>{SSProfile.balance}</h5>
-                <Icon name='brain-token' size={24} color='--system-pink' />
-            </div>
+                        <AnimatePresence>
+                            {SSUI.name === 'Join' && <motion.div className={sty.filters}>
+                                <motion.div className={sty.filter}
+                                    variants={filterVt(15, 0)}
+                                    initial='initial'
+                                    animate='animate'
+                                    exit='exit'
+                                    onClick={() => changeFilter('topic')}
+                                >
+                                    <div className={sty.filterIc}>
+                                        <Icon name='book' size={24} color='--system-yellow' />
+                                    </div>
+                                    <div className={sty.filterBody}>
+                                        <h4 className={sty.filterTtl}>Topic</h4>
+                                        <h5 className={sty.filterSbtl}>{SSFilters.topic}</h5>
+                                    </div>
+                                </motion.div>
+                                <motion.div className={sty.filter}
+                                    variants={filterVt(10, 1)}
+                                    initial='initial'
+                                    animate='animate'
+                                    exit='exit'
+                                    onClick={() => changeFilter('players')}
+                                >
+                                    <div className={sty.filterIc}>
+                                        <Icon name='person' size={22} color='--primary-tint' />
+                                    </div>
+                                    <div className={sty.filterBody}>
+                                        <h4 className={sty.filterTtl}>Players</h4>
+                                        <h5 className={sty.filterSbtl}>{`${SSFilters.players}${SSFilters.players !== 'All' ? ' players' : ''}`}</h5>
+                                    </div>
+                                </motion.div>
+                                <motion.div className={sty.filter}
+                                    variants={filterVt(10, 2)}
+                                    initial='initial'
+                                    animate='animate'
+                                    exit='exit'
+                                    onClick={() => changeFilter('duration')}
+                                >
+                                    <div className={sty.filterIc}>
+                                        <Icon name='timer-o' size={24} color='--primary-label' />
+                                    </div>
+                                    <div className={sty.filterBody}>
+                                        <h4 className={sty.filterTtl}>Duration</h4>
+                                        <h5 className={sty.filterSbtl}>{`${SSFilters.duration}${SSFilters.duration !== 'All' ? ' min' : ''}`}</h5>
+                                    </div>
+                                </motion.div>
+                                <motion.div className={sty.filter}
+                                    variants={filterVt(10, 3)}
+                                    initial='initial'
+                                    animate='animate'
+                                    exit='exit'
+                                    onClick={() => changeFilter('token')}
+                                >
+                                    <div className={sty.filterIc}>
+                                        <Icon name='brain-token' size={22} color='--system-pink' />
+                                    </div>
+                                    <div className={sty.filterBody}>
+                                        <h4 className={sty.filterTtl}>Token</h4>
+                                        <h5 className={sty.filterSbtl}>{`${SSFilters.token}${SSFilters.token !== 'All' ? ' token' : ''}`}</h5>
+                                    </div>
+                                </motion.div>
+                            </motion.div>}
+                        </AnimatePresence>
+                    </div>
+                    <div className={sty.balance}>
+                        <h5 className={sty.balanceLbl}>{SSProfile.balance}</h5>
+                        <Icon name='brain-token' size={24} color='--system-pink' />
+                    </div>
+                </motion.div>}
+            </AnimatePresence>
         </div>
     )
 }

@@ -250,9 +250,17 @@ export const Icon = ({ name, size = 20, color = '--white', style }) => {
                     strokeWidth="48" d="M328 112L184 256l144 144" />
             </svg>}
 
+            {name === 'chevron-down' && <svg xmlns="http://www.w3.org/2000/svg" className="ionicon" width={+size} heigth={+size} viewBox="0 0 512 512">
+                <path fill="none" stroke={getColor(color)} strokeLinecap="round" strokeLinejoin="round" strokeWidth="48" d="M112 184l144 144 144-144" />
+            </svg>}
+
             {name === 'chevron-forward' && <svg xmlns="http://www.w3.org/2000/svg" className="ionicon" width={+size} heigth={+size} viewBox="0 0 512 512">
                 <path fill="none" stroke={getColor(color)} strokeLinecap="round" strokeLinejoin="round"
                     strokeWidth="48" d="M184 112l144 144-144 144" />
+            </svg>}
+
+            {name === 'chevron-up' && <svg xmlns="http://www.w3.org/2000/svg" className="ionicon" width={+size} heigth={+size} viewBox="0 0 512 512">
+                <path fill="none" stroke={getColor(color)} strokeLinecap="round" strokeLinejoin="round" strokeWidth="48" d="M112 328l144-144 144 144" />
             </svg>}
 
             {name === 'close-circle-o' && <svg xmlns="http://www.w3.org/2000/svg" className="ionicon" width={+size} heigth={+size} viewBox="0 0 512 512">

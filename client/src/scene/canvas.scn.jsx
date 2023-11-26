@@ -7,7 +7,7 @@ export const Canvas = ({ children }) => {
         <Controls.Provider>
             <Controls.Canvas shadows>{children}</Controls.Canvas>
             {false && <Controls title='Settings' />}
-            <Stats />
+            {false && <Stats />}
         </Controls.Provider>
     )
 }
