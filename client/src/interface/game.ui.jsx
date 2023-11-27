@@ -44,8 +44,6 @@ export const Game = ({ ws }) => {
             const nextIndex = STGame.answers.findIndex((a, i) => i > STGame.questIndex && !a.hasOwnProperty('result'))
             const lastIndex = STGame.answers.findIndex(a => !a.hasOwnProperty('result'))
 
-            console.log({ nextIndex, lastIndex, answers: STGame.answers })
-
             if (lastIndex !== -1) {
                 STGame.questIndex = nextIndex !== -1 ? nextIndex : lastIndex
             } else {
@@ -83,29 +81,27 @@ export const Game = ({ ws }) => {
     }
 
 
-    useEffect(() => { if (SSUI.name === 'Game') STState.timer = 30 + STGame.quiz.length * 12 }, [SSUI.name])
+    useEffect(() => { STState.timer = 30 + STGame.quiz.length * 12 }, [SSUI.value.name])
 
     useEffect(() => {
-        if (SSUI.name === 'Game') {
-            interval = setInterval(() => {
-                if (SSState.countdown > 0) {
-                    countdownAnim.set({ opacity: 1 })
-                    countdownAnim.start({ opacity: 0 })
-                    STState.countdown = SSState.countdown - 1
-                } else if (SSState.timer > 0) {
-                    timerAnim.set({ opacity: 1 })
-                    timerAnim.start({ opacity: 0 })
-                    barAnim.start({ height: (400 * SSState.timer / (30 + STGame.quiz.length * 12)), backgroundColor: `hsl(${100 * SSState.timer / (30 + STGame.quiz.length * 12)} 100% 50%)` })
-                    STState.timer = SSState.timer - 1
-                } else {
-                    clearInterval(interval)
-                    console.log('You lost!')
-                }
-            }, 1000)
-        }
+        interval = setInterval(() => {
+            if (SSState.countdown > 0) {
+                countdownAnim.set({ opacity: 1 })
+                countdownAnim.start({ opacity: 0 })
+                STState.countdown = SSState.countdown - 1
+            } else if (SSState.timer > 0) {
+                timerAnim.set({ opacity: 1 })
+                timerAnim.start({ opacity: 0 })
+                barAnim.start({ height: (400 * SSState.timer / (30 + STGame.quiz.length * 12)), backgroundColor: `hsl(${100 * SSState.timer / (30 + STGame.quiz.length * 12)} 100% 50%)` })
+                STState.timer = SSState.timer - 1
+            } else {
+                clearInterval(interval)
+                console.log('You lost!')
+            }
+        }, 1000)
 
         return () => clearInterval(interval)
-    }, [SSUI.name, SSState.countdown, SSState.timer])
+    }, [SSUI.value.name, SSState.countdown, SSState.timer])
 
 
     return (

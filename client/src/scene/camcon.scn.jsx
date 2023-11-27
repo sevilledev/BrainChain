@@ -19,9 +19,9 @@ export const CamCon = ({ core }) => {
 
     const orbitOptions = {
         enablePan: false,
-        autoRotate: SSIndicator.id && SSUI.name !== 'Game',
-        maxPolarAngle: SSUI.name === 'Game' ? Math.PI : Math.PI / 2.2,
-        minPolarAngle: SSUI.name === 'Game' ? 0 : Math.PI / 2.2
+        autoRotate: SSIndicator.id && SSUI.value.name !== 'Game',
+        maxPolarAngle: SSUI.value.name === 'Game' ? Math.PI : Math.PI / 2.2,
+        minPolarAngle: SSUI.value.name === 'Game' ? 0 : Math.PI / 2.2
     }
 
 
@@ -32,7 +32,7 @@ export const CamCon = ({ core }) => {
             pos = [0, 1, 80]
         } else {
             if (SSIndicator.id) {
-                if (SSUI.name === 'Game') {
+                if (SSUI.value.name === 'Game') {
                     pos = [0, 10 + SSIndicator.players.all * 2.5, 0]
                 } else {
                     pos = [0, 1, 10 + SSIndicator.players.all]

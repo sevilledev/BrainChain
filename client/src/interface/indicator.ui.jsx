@@ -15,12 +15,12 @@ export const Indicator = () => {
     return (
         <div className={sty.indicatorHitSlop}>
             <AnimatePresence>
-                {!exceptions.includes(SSUI.name) && SSUI.showIndicator && <motion.div className={sty.indicator}
+                {!exceptions.includes(SSUI.value.name) && SSUI.value.showIndicator && <motion.div className={sty.indicator}
                     initial={{ y: 70 }}
                     animate={{ y: 0 }}
                     exit={{ y: 70 }}
                     transition={{ ease: 'easeInOut', duration: 0.5 }}
-                    onClick={() => STUI.name = 'Play'}
+                    onClick={() => STUI.value.name = 'Play'}
                 >
                     <div className={sty.indicatorTopicIc}>
                         <Icon name={SSIndicator.topic.icon} size={30} color='--system-yellow' />

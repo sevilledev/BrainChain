@@ -22,12 +22,12 @@ export const App = () => {
             Object.assign(STProfile, res.user)
         } else if (res.command === 'JOIN_GAME') {
             STProfile.activeGameId = res.game.id
-            STUI.showIndicator = true
+            STUI.value.showIndicator = true
             Object.assign(STIndicator, res.game)
             STScene.name = 'Game'
         } else if (res.command === 'LEAVE_GAME') {
             STProfile.activeGameId = ''
-            STUI.showIndicator = false
+            STUI.value.showIndicator = false
             Object.assign(STIndicator, { id: '', topic: { name: 'Anatomy', icon: 'body' }, duration: 5, token: 20, players: { all: 2, joined: 0, list: [] } })
             STScene.name = 'Lobby'
         } else if (res.command === 'UPDT_GAME') {
@@ -35,9 +35,9 @@ export const App = () => {
         } else if (res.command === 'START_GAME') {
             STGame.quiz = res.quiz
             STGame.answers = Array(res.quiz.length).fill({})
-            STUI.showIndicator = false
-            STUI.showControls = false
-            STUI.name = 'Game'
+            STUI.value.showIndicator = false
+            STUI.value.showControls = false
+            STUI.value.name = 'Game'
         } else if (res.command === 'UPDT_GAMES') {
             let games = res.games
                 .sort((a, b) => a.token - b.token)

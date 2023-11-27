@@ -1,7 +1,10 @@
 import { proxy } from 'valtio'
+import { proxyWithHistory } from 'valtio/utils'
 
 
-export const STUI = proxy({ name: 'Home', showControls: true, showIndicator: false })
+export const STUI = proxyWithHistory({ name: 'Home', showControls: true, showIndicator: false })
+
+export const STPrevUI = proxy({ show: false })
 
 export const STScene = proxy({ name: 'Lobby', state: '' })
 

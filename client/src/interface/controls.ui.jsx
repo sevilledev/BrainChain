@@ -56,15 +56,15 @@ export const Controls = () => {
 
 
     useEffect(() => {
-        if (SSUI.name === 'Home') inActiveNavs.start({ width: 'unset', marginRight: '20px', opacity: 1 })
+        if (SSUI.value.name === 'Home') inActiveNavs.start({ width: 'unset', marginRight: '20px', opacity: 1 })
         else inActiveNavs.start({ width: 0, marginRight: 0, opacity: 0 })
-    }, [SSUI.name])
+    }, [SSUI.value.name])
 
 
     return (
         <div className={sty.controlsHitSlop}>
             <AnimatePresence>
-                {SSUI.showControls && <motion.div className={sty.controls}
+                {SSUI.value.showControls && <motion.div className={sty.controls}
                     initial={{ y: -80 }}
                     animate={{ y: 0 }}
                     exit={{ y: -80 }}
@@ -76,14 +76,14 @@ export const Controls = () => {
                     </div>
                     <div className={sty.navbar}>
                         <div className={sty.menu}>
-                            <div className={sty.menuIc} onClick={() => STUI.name = 'Home'} >
+                            <div className={sty.menuIc} onClick={() => STUI.value.name = 'Home'} >
                                 <Icon name='grid' size={24} color='--primary-tint' />
                             </div>
                             {navs.map((item) => {
                                 return (
                                     <motion.div className={sty.menuItem} key={item}
-                                        onClick={() => STUI.name = item}
-                                        animate={SSUI.name !== item && inActiveNavs}
+                                        onClick={() => STUI.value.name = item}
+                                        animate={SSUI.value.name !== item && inActiveNavs}
                                         transition={{ ease: 'easeInOut', duration: 0.6 }}
                                     >
                                         {item}
@@ -93,7 +93,7 @@ export const Controls = () => {
                         </div>
 
                         <AnimatePresence>
-                            {SSUI.name === 'Join' && <motion.div className={sty.filters}>
+                            {SSUI.value.name === 'Join' && <motion.div className={sty.filters}>
                                 <motion.div className={sty.filter}
                                     variants={filterVt(15, 0)}
                                     initial='initial'
