@@ -1,0 +1,30 @@
+.matrixWrap {
+    position: absolute;
+    top: 0;
+}
+
+.matrix {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@keyframes pulse {
+    0% {
+        background-color: transparent;
+    }
+
+    50% {
+        background-color: var(--system-green);
+    }
+
+    100% {
+        background-color: transparent;
+    }
+}
+
+.matrixItem {
+    opacity: 0.6;
+    animation: pulse 2s linear forwards infinite;
+    transition: all 1s linear;
+    will-change: opacity;
+}

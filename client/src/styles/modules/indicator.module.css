@@ -1,0 +1,35 @@
+.indicatorHitSlop {
+    position: fixed;
+    bottom: 20px;
+    margin-left: 50%;
+    transform: translateX(-50%);
+}
+
+.indicator {
+    align-items: center;
+    height: 50px;
+    gap: 20px;
+    padding: 10px;
+    border-radius: 25px;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    background-color: var(--thin-material);
+    cursor: pointer;
+}
+
+.indicatorTopicIc {
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+}
+
+.indicatorPlayers {
+    align-items: center;
+    gap: 1px;
+}
+
+.indicatorPlayerIc {
+    align-items: center;
+    justify-content: center;
+}

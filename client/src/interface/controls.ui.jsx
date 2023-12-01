@@ -4,7 +4,7 @@ import { useSnapshot } from 'valtio'
 import { STUI, STProfile, STFilters, STGames } from '../stores/app.store'
 import { Icon } from '../components/core.cmp'
 
-import sty from '../styles/modules/app.module.css'
+import sty from '../styles/modules/controls.module.css'
 
 
 export const Controls = () => {
@@ -14,6 +14,7 @@ export const Controls = () => {
     const SSFilters = useSnapshot(STFilters)
 
     const inActiveNavs = useAnimation()
+    const activeNavs = useAnimation()
 
     const navs = ['Play', 'Join', 'Discover', 'Tournaments', 'Community']
 
@@ -57,7 +58,10 @@ export const Controls = () => {
 
     useEffect(() => {
         if (SSUI.value.name === 'Home') inActiveNavs.start({ width: 'unset', marginRight: '20px', opacity: 1 })
-        else inActiveNavs.start({ width: 0, marginRight: 0, opacity: 0 })
+        else {
+            inActiveNavs.start({ width: 0, marginRight: 0, opacity: 0 })
+            activeNavs.start({ width: 'unset', marginRight: '20px', opacity: 1 })
+        }
     }, [SSUI.value.name])
 
 
@@ -83,7 +87,7 @@ export const Controls = () => {
                                 return (
                                     <motion.div className={sty.menuItem} key={item}
                                         onClick={() => STUI.value.name = item}
-                                        animate={SSUI.value.name !== item && inActiveNavs}
+                                        animate={SSUI.value.name === item ? activeNavs : inActiveNavs}
                                         transition={{ ease: 'easeInOut', duration: 0.6 }}
                                     >
                                         {item}

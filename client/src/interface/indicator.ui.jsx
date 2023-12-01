@@ -3,7 +3,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { STIndicator, STUI } from '../stores/app.store'
 import { Icon } from '../components/core.cmp'
 
-import sty from '../styles/modules/app.module.css'
+import sty from '../styles/modules/indicator.module.css'
 
 
 export const Indicator = () => {

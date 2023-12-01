@@ -1,10 +1,9 @@
-import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useSnapshot } from 'valtio'
 import { STIndicator, STProfile } from '../stores/app.store'
-import { Icon } from '../components/core.cmp'
+import { Icon, Matrix } from '../components/core.cmp'
 
-import sty from '../styles/modules/app.module.css'
+import sty from '../styles/modules/play.module.css'
 
 
 export const Play = ({ ws }) => {
@@ -21,39 +20,6 @@ export const Play = ({ ws }) => {
         'Mixed': 'earth',
         'Music': 'musical-notes',
         'Sports': 'basketball'
-    }
-
-
-    const PlayBg = () => {
-        const [toggle, setToggle] = useState()
-
-
-        useEffect(() => {
-            setTimeout(() => setToggle(!toggle), 800)
-        }, [toggle])
-
-
-        return (
-            <motion.div style={{ gap: 3 }} className={sty.playBg}
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                transition={{ ease: 'easeOut', duration: 1.5 }}
-            >
-                {Array(400).fill().map((cube, index) => {
-                    const toggle = Math.round(Math.random())
-                    return (
-                        <div key={index} style={{
-                            width: 23.8,
-                            height: 23.8,
-                            opacity: 0.6,
-                            backgroundColor: toggle ? 'var(--system-green)' : 'transparent',
-                            transition: `all 1s linear ${Math.random().toFixed(2)}s`
-                        }}></div>
-                    )
-                })}
-            </motion.div>
-        )
     }
 
 
@@ -85,80 +51,89 @@ export const Play = ({ ws }) => {
 
     return (
         <div className={sty.play}>
-            {!SSProfile.activeGameId && <div className={sty.playFilters}>
-                <div className={sty.filter} onClick={() => changeFilter('topic')}>
-                    <div className={sty.filterIc}>
-                        <Icon name='book' size={24} color='--system-yellow' />
-                    </div>
-                    <div className={sty.filterBody}>
-                        <h4 className={sty.filterTtl}>Topic</h4>
-                        <h5 className={sty.filterSbtl}>{SSIndicator.topic.name}</h5>
-                    </div>
-                </div>
-                <div className={sty.filter} onClick={() => changeFilter('players')}>
-                    <div className={sty.filterIc}>
-                        <Icon name='person' size={22} color='--primary-tint' />
-                    </div>
-                    <div className={sty.filterBody}>
-                        <h4 className={sty.filterTtl}>Players</h4>
-                        <h5 className={sty.filterSbtl}>{`${SSIndicator.players.all} players`}</h5>
-                    </div>
-                </div>
-                <div className={sty.filter} onClick={() => changeFilter('duration')}>
-                    <div className={sty.filterIc}>
-                        <Icon name='timer-o' size={24} color='--primary-label' />
-                    </div>
-                    <div className={sty.filterBody}>
-                        <h4 className={sty.filterTtl}>Duration</h4>
-                        <h5 className={sty.filterSbtl}>{`${SSIndicator.duration} min`}</h5>
-                    </div>
-                </div>
-                <div className={sty.filter} onClick={() => changeFilter('token')}>
-                    <div className={sty.filterIc}>
-                        <Icon name='brain-token' size={22} color='--system-pink' />
-                    </div>
-                    <div className={sty.filterBody}>
-                        <h4 className={sty.filterTtl}>Token</h4>
-                        <h5 className={sty.filterSbtl}>{`${SSIndicator.token} token`}</h5>
-                    </div>
-                </div>
-            </div>}
+            <div className={sty.playCenter}>
+                <AnimatePresence>
+                    {!SSProfile.activeGameId && <motion.div className={sty.filters}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ ease: 'easeInOut', duration: 0.3 }}
+                    >
+                        <div className={sty.filter} onClick={() => changeFilter('topic')}>
+                            <div className={sty.filterIc}>
+                                <Icon name='book' size={24} color='--system-yellow' />
+                            </div>
+                            <div className={sty.filterBody}>
+                                <h4 className={sty.filterTtl}>Topic</h4>
+                                <h5 className={sty.filterSbtl}>{SSIndicator.topic.name}</h5>
+                            </div>
+                        </div>
+                        <div className={sty.filter} onClick={() => changeFilter('players')}>
+                            <div className={sty.filterIc}>
+                                <Icon name='person' size={22} color='--primary-tint' />
+                            </div>
+                            <div className={sty.filterBody}>
+                                <h4 className={sty.filterTtl}>Players</h4>
+                                <h5 className={sty.filterSbtl}>{`${SSIndicator.players.all} players`}</h5>
+                            </div>
+                        </div>
+                        <div className={sty.filter} onClick={() => changeFilter('duration')}>
+                            <div className={sty.filterIc}>
+                                <Icon name='timer-o' size={24} color='--primary-label' />
+                            </div>
+                            <div className={sty.filterBody}>
+                                <h4 className={sty.filterTtl}>Duration</h4>
+                                <h5 className={sty.filterSbtl}>{`${SSIndicator.duration} min`}</h5>
+                            </div>
+                        </div>
+                        <div className={sty.filter} onClick={() => changeFilter('token')}>
+                            <div className={sty.filterIc}>
+                                <Icon name='brain-token' size={22} color='--system-pink' />
+                            </div>
+                            <div className={sty.filterBody}>
+                                <h4 className={sty.filterTtl}>Token</h4>
+                                <h5 className={sty.filterSbtl}>{`${SSIndicator.token} token`}</h5>
+                            </div>
+                        </div>
+                    </motion.div>}
+                </AnimatePresence>
 
-            <div className={sty.playWrapper}>
-                {SSProfile.activeGameId && <PlayBg />}
-                <div className={sty.playGame}>
-                    <div className={sty.playHeader}>
-                        <Icon name={SSIndicator.topic.icon} size={50} color='--system-yellow' />
-                        <div className={sty.playToken}>
-                            <h5 className={sty.playTokenLbl}>{SSIndicator.token}</h5>
-                            <Icon name='brain-token' size={48} color='--system-pink' />
+                <div className={sty.playWrapper}>
+                    {SSProfile.activeGameId && <Matrix count={225} width={24} height={24} gap={3} />}
+                    <div className={sty.playGame}>
+                        <div className={sty.playHeader}>
+                            <Icon name={SSIndicator.topic.icon} size={50} color='--system-yellow' />
+                            <div className={sty.playToken}>
+                                <h5 className={sty.playTokenLbl}>{SSIndicator.token}</h5>
+                                <Icon name='brain-token' size={48} color='--system-pink' />
+                            </div>
+                        </div>
+                        <div className={sty.playTopic}>
+                            <h2 className={sty.playTopicLbl}>{SSIndicator.topic.name}</h2>
+                            <h5 className={sty.playDurationLbl}>{SSIndicator.duration} min</h5>
+                        </div>
+                        <div className={sty.playPlayers}>
+                            {Array(SSIndicator.players.all).fill().map((player, index) => {
+                                return (
+                                    index < (SSProfile.activeGameId ? SSIndicator.players.joined : 1)
+                                        ? <Icon name='person' size={34} color='--primary-tint' key={index} />
+                                        : <Icon name='person-o' size={34} color='--primary-tint' key={index} />
+                                )
+                            })}
                         </div>
                     </div>
-                    <div className={sty.playTopic}>
-                        <h2 className={sty.playTopicLbl}>{SSIndicator.topic.name}</h2>
-                        <h5 className={sty.playDurationLbl}>{SSIndicator.duration} min</h5>
-                    </div>
-                    <div className={sty.playPlayers}>
-                        {Array(SSIndicator.players.all).fill().map((player, index) => {
-                            return (
-                                index < (SSProfile.activeGameId ? SSIndicator.players.joined : 1)
-                                    ? <Icon name='person' size={34} color='--primary-tint' key={index} />
-                                    : <Icon name='person-o' size={34} color='--primary-tint' key={index} />
-                            )
-                        })}
-                    </div>
                 </div>
-            </div>
 
-            <div className={sty.playBtns}>
-                {!SSProfile.activeGameId
-                    ? <button className={sty.playBtn} onClick={() => createGame()}>
-                        <h2 className={sty.playBtnLbl}>Play</h2>
-                    </button>
-                    : <button className={sty.leaveBtn} onClick={() => leaveGame()}>
-                        <h2 className={sty.leaveBtnLbl}>Leave</h2>
-                    </button>
-                }
+                <div className={sty.playBtns}>
+                    {!SSProfile.activeGameId
+                        ? <button className={sty.playBtn} onClick={() => createGame()}>
+                            <h2 className={sty.playBtnLbl}>Play</h2>
+                        </button>
+                        : <button className={sty.leaveBtn} onClick={() => leaveGame()}>
+                            <h2 className={sty.leaveBtnLbl}>Leave</h2>
+                        </button>
+                    }
+                </div>
             </div>
         </div>
     )

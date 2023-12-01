@@ -5,7 +5,7 @@ import { Icon } from '../components/core.cmp'
 
 import { STGame, STUI } from '../stores/app.store'
 
-import sty from '../styles/modules/app.module.css'
+import sty from '../styles/modules/game.module.css'
 
 
 const STState = proxy({ countdown: 3, timer: 0 })
@@ -114,10 +114,9 @@ export const Game = ({ ws }) => {
                     transition={{ ease: 'easeIn', duration: 0.8, delay: 0.2 }}
                 >{SSState.countdown}</motion.h1>
                 : <div className={sty.quiz}>
-                    <div className={sty.quizTop}></div>
                     <div className={sty.quizBody}>
                         <div className={sty.quizNavbar}>
-                            <button className={sty.quizNavIc} onClick={() => navigate('forward')}>
+                            <button onClick={() => navigate('forward')}>
                                 <Icon name='chevron-up' size={36} color='--system-blue' />
                             </button>
                             <div className={sty.quizNavList}>
@@ -127,7 +126,7 @@ export const Game = ({ ws }) => {
                                     )
                                 })}
                             </div>
-                            <button className={sty.quizNavIc} onClick={() => navigate('backward')}>
+                            <button onClick={() => navigate('backward')}>
                                 <Icon name='chevron-down' size={36} color='--system-blue' />
                             </button>
                         </div>
@@ -162,7 +161,6 @@ export const Game = ({ ws }) => {
                             </div>
                         </div>
                     </div>
-                    <div className={sty.quizBottom}></div>
                 </div>
             }
         </div>

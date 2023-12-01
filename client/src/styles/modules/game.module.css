@@ -1,0 +1,171 @@
+.game {
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    background-color: var(--thin-material);
+    overflow-y: hidden;
+}
+
+.countdown {
+    font-size: 150px;
+    font-weight: 700;
+}
+
+.quiz {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.quizBody {
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+}
+
+
+
+/* Quiz Navbar */
+
+.quizNavbar {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-left: 20px;
+}
+
+.quizNavList {
+    flex-direction: column-reverse;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+}
+
+.quizNav {
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: var(--primary-fill);
+    transition: all .3s ease-in-out;
+}
+
+.quizNav:hover {
+    transform: scale(1.5);
+    transition: all .3s ease-in-out;
+}
+
+
+
+/* Quiz Question */
+
+.quizQuest {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+}
+
+.quest {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.questLbl {
+    font-family: 'Barlow Condensed';
+    font-size: 36px;
+    font-weight: 400;
+}
+
+.questContent {
+    margin-top: 50px;
+    font-family: 'Barlow Condensed';
+    font-size: 40px;
+    font-weight: 500;
+}
+
+.choices {
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-top: 100px;
+}
+
+.choice {
+    flex-basis: calc(50% - 15px);
+    align-items: center;
+    justify-content: center;
+    min-width: 60px;
+    height: 60px;
+    border-radius: 30px;
+    background-color: var(--ultrathin-material);
+    transition: all .3s ease-in-out;
+    cursor: pointer;
+}
+
+.choice:hover {
+    box-shadow: inset 0 0 0 2px var(--white);
+    transition: all .3s ease-in-out;
+}
+
+.choiceLbl {
+    font-family: 'Barlow Condensed';
+    font-size: 30px;
+    font-weight: 400;
+}
+
+.choice:active {
+    background-color: var(--white);
+    color: var(--black);
+    transition: all .3s ease-in-out;
+}
+
+.choice:active>.choiceLbl {
+    color: var(--black);
+    transition: all .3s ease-in-out;
+}
+
+
+
+/* Quiz Timer */
+
+.quizTimer {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.timerLbl {
+    width: 3ch;
+    font-size: 50px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.timerBar {
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 412px;
+    width: 30px;
+    padding: 3px;
+    border-radius: 15px;
+    background-color: var(--primary-fill);
+    overflow: hidden;
+}
+
+.timerBarInd {
+    height: 0%;
+    width: 24px;
+    border-radius: 12px;
+    background-color: var(--system-green);
+}

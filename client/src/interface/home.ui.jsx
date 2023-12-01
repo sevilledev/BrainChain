@@ -1,4 +1,4 @@
-import sty from '../styles/modules/app.module.css'
+import sty from '../styles/modules/home.module.css'
 
 
 export const Home = () => {

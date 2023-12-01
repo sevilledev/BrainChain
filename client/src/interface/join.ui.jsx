@@ -1,48 +1,13 @@
-import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
 import { useSnapshot } from 'valtio'
-import { Icon } from '../components/core.cmp'
+import { Icon, Matrix } from '../components/core.cmp'
 import { STGames, STProfile } from '../stores/app.store'
 
-import sty from '../styles/modules/app.module.css'
+import sty from '../styles/modules/join.module.css'
 
 
 export const Join = ({ ws }) => {
     const SSProfile = useSnapshot(STProfile)
     const SSGames = useSnapshot(STGames)
-
-
-    const GameBg = () => {
-        const [toggle, setToggle] = useState()
-
-
-        useEffect(() => {
-            setTimeout(() => setToggle(!toggle), 800)
-        }, [toggle])
-
-
-        return (
-            <motion.div style={{ gap: 2 }} className={sty.gameBg}
-                initial={{ scale: 0.9, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.9, opacity: 0 }}
-                transition={{ ease: 'easeOut', duration: 1.5 }}
-            >
-                {Array(100).fill().map((cube, index) => {
-                    const toggle = Math.round(Math.random())
-                    return (
-                        <div key={index} style={{
-                            width: 18.2,
-                            height: 18.2,
-                            opacity: 0.6,
-                            backgroundColor: toggle ? 'var(--system-green)' : 'transparent',
-                            transition: `all 1s linear ${Math.random().toFixed(2)}s`
-                        }}></div>
-                    )
-                })}
-            </motion.div>
-        )
-    }
 
 
     const actGame = (game) => {
@@ -56,7 +21,7 @@ export const Join = ({ ws }) => {
                 {SSGames.filtered.map((game) => {
                     return (
                         <div className={sty.gameWrapper} key={game.id}>
-                            {SSProfile.activeGameId === game.id && <GameBg />}
+                            {SSProfile.activeGameId === game.id && <Matrix count={100} width={18} height={18} gap={2} />}
                             <div className={sty.gameCard} onClick={() => actGame(game)}>
                                 <div className={sty.gameHeader}>
                                     <Icon name={game.topic.icon} size={34} color='--system-yellow' />
