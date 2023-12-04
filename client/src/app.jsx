@@ -21,15 +21,15 @@ export const App = () => {
         if (res.command === 'INIT_PLYR') {
             Object.assign(STProfile, res.user)
         } else if (res.command === 'JOIN_GAME') {
-            STProfile.activeGameId = res.game.id
+            STProfile.gameID = res.game.id
             STUI.value.showIndicator = true
             Object.assign(STIndicator, res.game)
             STScene.name = 'Game'
         } else if (res.command === 'LEAVE_GAME') {
-            STProfile.activeGameId = ''
+            STScene.name = 'Lobby'
+            STProfile.gameID = ''
             STUI.value.showIndicator = false
             Object.assign(STIndicator, { id: '', topic: { name: 'Anatomy', icon: 'body' }, duration: 5, token: 20, players: { all: 2, joined: 0, list: [] } })
-            STScene.name = 'Lobby'
         } else if (res.command === 'UPDT_GAME') {
             Object.assign(STIndicator, res.game)
         } else if (res.command === 'START_GAME') {
@@ -46,6 +46,13 @@ export const App = () => {
                 .sort((a, b) => a.players.all - b.players.all)
             STGames.all = games
             STGames.filtered = games
+        } else if (res.command === 'UPDT_ANSR') {
+            STIndicator.answers = res.answers
+        } else if (res.command === 'UPDT_PLYRS') {
+            STIndicator.players = res.players
+        } else if (res.command === 'FNSH_GAME') {
+            STProfile.gameID = ''
+            STGame.ui = res.winner.id === STProfile.id ? 'Win' : 'Lost'
         }
     }
 

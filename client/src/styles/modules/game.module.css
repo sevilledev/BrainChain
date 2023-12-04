@@ -169,3 +169,176 @@
     border-radius: 12px;
     background-color: var(--system-green);
 }
+
+
+
+/* Lost */
+
+.lost {
+    align-items: center;
+    justify-content: center;
+}
+
+.lostLbl {
+    font-size: 100px;
+    font-weight: 600;
+    color: var(--system-red);
+}
+
+
+
+/* Win */
+
+.win {
+    align-items: center;
+    justify-content: center;
+}
+
+.winLbl {
+    font-size: 100px;
+    font-weight: 600;
+    color: var(--system-green);
+}
+
+
+
+/* Timeout */
+
+.timeout {
+    align-items: center;
+    justify-content: center;
+}
+
+.timeoutLbl {
+    font-size: 100px;
+    font-weight: 600;
+    color: var(--system-yellow);
+}
+
+
+
+/* Finish */
+
+.finish {
+    align-items: center;
+    justify-content: center;
+}
+
+.finishLbl {
+    font-size: 100px;
+    font-weight: 600;
+    color: var(--system-orange);
+}
+
+
+
+/* Board */
+
+.board {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.leaveBtn {
+    display: flex;
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    background-color: #FF453A2B;
+}
+
+.boardLbl {
+    font-size: 70px;
+    font-weight: 600;
+    color: var(--system-blue);
+}
+
+.boardHeader {
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+    margin-top: 80px;
+}
+
+.orderLbl {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.nameLbl {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.correctLbl {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.wrongLbl {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.emptyLbl {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.progressLbl {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.boardList {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 20px;
+    margin-top: 50px;
+}
+
+.boardItem {
+    align-items: center;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.order {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.name {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.correct {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.wrong {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.empty {
+    font-size: 20px;
+    font-weight: 500;
+}
+
+.progress {
+    font-size: 20px;
+    font-weight: 500;
+}

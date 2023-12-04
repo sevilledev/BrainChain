@@ -6,7 +6,7 @@ import { STPrevUI, STUI } from '../../stores/app.store'
 import sty from './router.module.css'
 
 
-export const Router = (props) => {
+export const Router = ({ children }) => {
     const SSUI = useSnapshot(STUI)
     const SSPrevUI = useSnapshot(STPrevUI)
 
@@ -18,12 +18,11 @@ export const Router = (props) => {
 
 
     useEffect(() => {
-        STPrevUI.show = true
-        setTimeout(() => STPrevUI.show = false, 600)
+        setTimeout(() => STPrevUI.name = SSUI.value.name, 600)
     }, [SSUI.value.name])
 
 
-    return props.children.map((ui) => {
+    return children.map((ui) => {
         return (
             <motion.div className={sty.router} key={ui.props.name}
                 style={ui.props.name !== 'Home' && ui.props.name === SSUI.value.name && { display: 'flex' }}
@@ -31,7 +30,7 @@ export const Router = (props) => {
                 animate={ui.props.name === SSUI.value.name ? 'in' : 'out'}
                 transition={{ ease: 'easeInOut', duration: 0.6 }}
             >
-                {((ui.props.name === SSUI.value.name) || (SSPrevUI.show && ui.props.name === SSUI.history.snapshots[SSUI.history.index - 1]?.name)) && ui}
+                {(ui.props.name === SSUI.value.name || ui.props.name === SSPrevUI.name) && ui}
             </motion.div>
         )
     })

@@ -45,7 +45,7 @@ export const Play = ({ ws }) => {
     }
 
     const leaveGame = () => {
-        ws.send(JSON.stringify({ command: 'LEAVE_GAME', id: SSProfile.activeGameId, name: SSProfile.name }))
+        ws.send(JSON.stringify({ command: 'LEAVE_GAME', id: SSProfile.gameID, name: SSProfile.name }))
     }
 
 
@@ -53,7 +53,7 @@ export const Play = ({ ws }) => {
         <div className={sty.play}>
             <div className={sty.playCenter}>
                 <AnimatePresence>
-                    {!SSProfile.activeGameId && <motion.div className={sty.filters}
+                    {!SSProfile.gameID && <motion.div className={sty.filters}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
@@ -99,7 +99,7 @@ export const Play = ({ ws }) => {
                 </AnimatePresence>
 
                 <div className={sty.playWrapper}>
-                    {SSProfile.activeGameId && <Matrix count={225} width={24} height={24} gap={3} />}
+                    {SSProfile.gameID && <Matrix count={225} width={24} height={24} gap={3} />}
                     <div className={sty.playGame}>
                         <div className={sty.playHeader}>
                             <Icon name={SSIndicator.topic.icon} size={50} color='--system-yellow' />
@@ -115,7 +115,7 @@ export const Play = ({ ws }) => {
                         <div className={sty.playPlayers}>
                             {Array(SSIndicator.players.all).fill().map((player, index) => {
                                 return (
-                                    index < (SSProfile.activeGameId ? SSIndicator.players.joined : 1)
+                                    index < (SSProfile.gameID ? SSIndicator.players.joined : 1)
                                         ? <Icon name='person' size={34} color='--primary-tint' key={index} />
                                         : <Icon name='person-o' size={34} color='--primary-tint' key={index} />
                                 )
@@ -125,7 +125,7 @@ export const Play = ({ ws }) => {
                 </div>
 
                 <div className={sty.playBtns}>
-                    {!SSProfile.activeGameId
+                    {!SSProfile.gameID
                         ? <button className={sty.playBtn} onClick={() => createGame()}>
                             <h2 className={sty.playBtnLbl}>Play</h2>
                         </button>

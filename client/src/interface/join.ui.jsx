@@ -11,7 +11,7 @@ export const Join = ({ ws }) => {
 
 
     const actGame = (game) => {
-        ws.send(JSON.stringify({ command: game.id === SSProfile.activeGameId ? 'LEAVE_GAME' : 'JOIN_GAME', id: game.id, name: SSProfile.name, color: SSProfile.color }))
+        ws.send(JSON.stringify({ command: game.id === SSProfile.gameID ? 'LEAVE_GAME' : 'JOIN_GAME', id: game.id, name: SSProfile.name, color: SSProfile.color }))
     }
 
 
@@ -21,7 +21,7 @@ export const Join = ({ ws }) => {
                 {SSGames.filtered.map((game) => {
                     return (
                         <div className={sty.gameWrapper} key={game.id}>
-                            {SSProfile.activeGameId === game.id && <Matrix count={100} width={18} height={18} gap={2} />}
+                            {SSProfile.gameID === game.id && <Matrix count={100} width={18} height={18} gap={2} />}
                             <div className={sty.gameCard} onClick={() => actGame(game)}>
                                 <div className={sty.gameHeader}>
                                     <Icon name={game.topic.icon} size={34} color='--system-yellow' />

@@ -49,7 +49,7 @@ exports.genColor = () => {
 
 
 exports.genGame = (count = 20) => {
-    let games = []
+    const games = {}
     const durations = [5, 10, 15]
     const tokens = [20, 50, 100, 150, 200]
     const names = ['Salvador Johnston', 'Wallace Long', 'Howard Beck', 'Alfredo Curtis', 'Stephen Williamson', 'Logan Carter', 'Travis Stevens', 'Derrick Kuhn', 'Kylie Grant', 'Jonathan Gordon']
@@ -95,18 +95,21 @@ exports.genGame = (count = 20) => {
     const genPlayers = () => {
         const all = 2 * Math.floor(1 + Math.random() * 4)
         const joined = Math.floor(1 + Math.random() * (all - 1))
-        const list = names.sort(() => (Math.random() > .5) ? 1 : -1).slice(0, joined).map((name) => { return { name, color: this.genColor() } })
+        const list = names.sort(() => (Math.random() > .5) ? 1 : -1).slice(0, joined).map((name) => { return { id: this.genRandom(), name, color: this.genColor(), isFinished: false } })
         return { all, joined, list }
     }
 
     for (let i = 0; i < count; i++) {
-        games.push({
-            id: this.genRandom(8, 10),
+        const id = this.genRandom(8, 10)
+
+        games[id] = {
+            id,
             topic: topics[Math.floor(Math.random() * topics.length)],
             duration: durations[Math.floor(Math.random() * durations.length)],
             token: tokens[Math.floor(Math.random() * tokens.length)],
-            players: genPlayers()
-        })
+            players: genPlayers(),
+            answers: {}
+        }
     }
 
     return games

@@ -13,7 +13,7 @@ const wss = new WebSocketServer({ port: 50001 })  // on production: 3001
 const lobby = {}
 const rooms = {}
 const liveGames = {}
-var games = genGame(50)
+const games = genGame(50)
 
 
 
@@ -25,6 +25,10 @@ app.use(express.json())
 
 
 // Functions
+
+const getArray = (from) => {
+    return Object.values(from)
+}
 
 const sendLobby = (obj) => {
     for (const userID in lobby) {
@@ -152,7 +156,7 @@ const init = () => {
     console.log(`\x1b[33mApp running on 🔥\n\n\x1b[36m  http://localhost:${PORT}  \x1b[0m\n`); wss.on('error', console.error)
 
     // For generated games
-    games.forEach((game) => rooms[game.id] = {})
+    Object.keys(games).forEach((id) => rooms[id] = {})
 }
 
 
@@ -167,9 +171,10 @@ wss.on('connection', (ws) => {
 
         if (req.command === 'INIT_PLYR') {
             const user = {
+                id: userID,
                 isGuest: true,
                 isInLobby: true,
-                activeGameId: '',
+                gameID: '',
                 balance: 100,
                 color: genColor(),
                 name: `Guest #${Math.round(Math.random() * 10000 - 1).toString().padEnd(4, '0')}`
@@ -178,27 +183,25 @@ wss.on('connection', (ws) => {
             Object.assign(ws, user)
             lobby[userID] = ws
 
-            ws.send(JSON.stringify({ command: 'INIT_PLYR', user, games }))
-            ws.send(JSON.stringify({ command: 'UPDT_GAMES', games }))
+            ws.send(JSON.stringify({ command: 'INIT_PLYR', user }))
+            ws.send(JSON.stringify({ command: 'UPDT_GAMES', games: getArray(games) }))
             console.log(`[${lobby[userID].name}]\x1b[1;32m Joined\x1b[0m 🥳`)
         } else if (req.command === 'JOIN_GAME') {
-            if (lobby[userID].activeGameID) {
-                const activeGame = games.filter(g => g.id === lobby[userID].activeGameID)[0]
+            const liveGameID = lobby[userID].gameID
 
-                if (activeGame) {
-                    if (activeGame.players.joined === 1) {
-                        delete rooms[activeGame.id]
-                        games = games.filter(g => g.id !== activeGame.id)
+            if (liveGameID) {
+                if (games[liveGameID]) {
+                    if (games[liveGameID].players.joined === 1) {
+                        delete rooms[liveGameID]
+                        delete games[liveGameID]
                     } else {
-                        activeGame.players.list = activeGame.players.list.filter(p => p.name !== req.name)
-                        activeGame.players.joined--
-                        delete rooms[lobby[userID].activeGameID][userID]
+                        games[liveGameID].players.list = games[liveGameID].players.list.filter(p => p.name !== req.name)
+                        games[liveGameID].players.joined--
+                        delete rooms[liveGameID][userID]
 
-                        sendRoom(activeGame.id, { command: 'UPDT_GAME', game: activeGame })
+                        sendRoom(liveGameID, { command: 'UPDT_GAME', game: games[liveGameID] })
                     }
                 } else {
-                    const liveGameID = lobby[userID].activeGameID
-
                     if (liveGames[liveGameID].players.joined === 1) {
                         delete rooms[liveGameID]
                         delete liveGames[liveGameID]
@@ -211,83 +214,117 @@ wss.on('connection', (ws) => {
                     }
                 }
 
-                lobby[userID].activeGameID = ''
+                lobby[userID].gameID = ''
             }
 
-            let game = games.filter(g => g.id === req.id)[0]
-
-            lobby[userID].activeGameID = game.id
+            lobby[userID].gameID = req.id
             rooms[req.id][userID] = ws
-            game.players.list.push({ name: req.name, color: req.color })
-            game.players.joined++
+            games[req.id].players.list.push({ id: userID, name: req.name, color: req.color, isFinished: false })
+            games[req.id].players.joined++
+            games[req.id].answers[userID] = Array(games[req.id].duration).fill({ answer: '', isTrue: null })
 
-            ws.send(JSON.stringify({ command: 'JOIN_GAME', game }))
-            sendRoom(game.id, { command: 'UPDT_GAME', game })
+            ws.send(JSON.stringify({ command: 'JOIN_GAME', game: games[req.id] }))
+            sendRoom(req.id, { command: 'UPDT_GAME', game: games[req.id] })
 
-            if (game.players.joined === game.players.all) {
-                liveGames[game.id] = game
-                games = games.filter(g => g.id !== game.id)
-                sendRoom(game.id, { command: 'START_GAME', quiz: getQuiz(game.duration) })
+            if (games[req.id].players.joined === games[req.id].players.all) {
+                liveGames[req.id] = games[req.id]
+                liveGames[req.id].quiz = getQuiz(liveGames[req.id].duration)
+                delete games[req.id]
+                sendRoom(req.id, { command: 'START_GAME', quiz: liveGames[req.id].quiz })
             }
 
-            sendLobby({ command: 'UPDT_GAMES', games })
+            sendLobby({ command: 'UPDT_GAMES', games: getArray(games) })
         } else if (req.command === 'LEAVE_GAME') {
-            let game = games.filter(g => g.id === req.id)[0]
-
-            if (game.players.joined === 1) {
-                delete rooms[game.id]
-                games = games.filter(g => g.id !== game.id)
+            if (games[req.id].players.joined === 1) {
+                delete rooms[req.id]
+                delete games[req.id]
             } else {
-                game.players.list = game.players.list.filter(p => p.name !== req.name)
-                game.players.joined--
-                delete rooms[game.id][userID]
+                games[req.id].players.list = games[req.id].players.list.filter(p => p.name !== req.name)
+                games[req.id].players.joined--
+                delete rooms[req.id][userID]
             }
 
-            lobby[userID].activeGameID = ''
+            lobby[userID].gameID = ''
 
-            ws.send(JSON.stringify({ command: 'LEAVE_GAME', game }))
-            sendRoom(game.id, { command: 'UPDT_GAME', game })
-            sendLobby({ command: 'UPDT_GAMES', games })
+            ws.send(JSON.stringify({ command: 'LEAVE_GAME', game: games[req.id] }))
+            sendRoom(req.id, { command: 'UPDT_GAME', game: games[req.id] })
+            sendLobby({ command: 'UPDT_GAMES', games: getArray(games) })
         } else if (req.command === 'CREATE_GAME') {
-            const game = {
-                id: genRandom(8, 10),
+            const gameID = genRandom(8, 10)
+
+            games[gameID] = {
+                id: gameID,
                 topic: req.game.topic,
                 duration: req.game.duration,
                 token: req.game.token,
-                players: { all: req.game.players.all, joined: 1, list: [{ name: req.user.name, color: req.user.color }] }
+                players: { all: req.game.players.all, joined: 1, list: [{ id: userID, name: req.user.name, color: req.user.color, isFinished: false }] },
+                answers: { [userID]: Array(req.game.duration).fill({ answer: '', isTrue: null }) }
             }
-            games.push(game)
-            lobby[userID].activeGameID = game.id
-            rooms[game.id] = {}
-            rooms[game.id][userID] = ws
-            ws.send(JSON.stringify({ command: 'JOIN_GAME', game }))
-            sendRoom(game.id, { command: 'UPDT_GAME', game })
-            sendLobby({ command: 'UPDT_GAMES', games })
+
+            lobby[userID].gameID = gameID
+            rooms[gameID] = {}
+            rooms[gameID][userID] = ws
+            ws.send(JSON.stringify({ command: 'JOIN_GAME', game: games[gameID] }))
+            sendRoom(gameID, { command: 'UPDT_GAME', game: games[gameID] })
+            sendLobby({ command: 'UPDT_GAMES', games: getArray(games) })
+        } else if (req.command === 'SEND_ANSR') {
+            if (req.answer) {
+                liveGames[req.id].answers[userID][req.index] = { answer: req.answer, isTrue: req.answer === liveGames[req.id].quiz[req.index].correct }
+                sendRoom(req.id, { command: 'UPDT_ANSR', answers: liveGames[req.id].answers })
+
+                if (liveGames[req.id].answers[userID].findIndex(a => a.answer === '') === -1) {
+                    liveGames[req.id].players.list[liveGames[req.id].players.list.findIndex(p => p.id === userID)].isFinished = true
+                    sendRoom(req.id, { command: 'UPDT_PLYRS', players: liveGames[req.id].players })
+                }
+            } else {
+                liveGames[req.id].players.list[liveGames[req.id].players.list.findIndex(p => p.id === userID)].isFinished = true
+                sendRoom(req.id, { command: 'UPDT_PLYRS', players: liveGames[req.id].players })
+            }
+
+            if (liveGames[req.id].players.list.findIndex(p => p.isFinished === false) === -1) {
+                let stats = []
+
+                liveGames[req.id].players.list.forEach((player) => {
+                    lobby[player.id].gameID = ''
+                    
+                    stats.push({
+                        id: player.id,
+                        name: player.name,
+                        correct: liveGames[req.id].answers[player.id].filter(a => a.isTrue).length,
+                        wrong: liveGames[req.id].answers[player.id].filter(a => a.isTrue === false).length,
+                    })
+                })
+
+                stats = stats.sort((a, b) => a.wrong - b.wrong).sort((a, b) => b.correct - a.correct)
+
+                sendRoom(req.id, { command: 'FNSH_GAME', winner: stats[0] })
+
+                delete rooms[req.id]
+                delete liveGames[req.id]
+            }
         }
     })
 
     ws.on('close', () => {
         console.log(`[${lobby[userID].name}]\x1b[1;31m Disconnected\x1b[0m 💀`)
 
-        if (lobby[userID].activeGameID) {
-            const activeGame = games.filter(g => g.id === lobby[userID].activeGameID)[0]
+        const liveGameID = lobby[userID].gameID
 
-            if (activeGame) {
-                if (activeGame.players.joined === 1) {
-                    delete rooms[activeGame.id]
-                    games = games.filter(g => g.id !== activeGame.id)
+        if (liveGameID) {
+            if (games[liveGameID]) {
+                if (games[liveGameID].players.joined === 1) {
+                    delete rooms[liveGameID]
+                    delete games[liveGameID]
                 } else {
-                    activeGame.players.list = activeGame.players.list.filter(p => p.name !== lobby[userID].name)
-                    activeGame.players.joined--
-                    delete rooms[lobby[userID].activeGameID][userID]
+                    games[liveGameID].players.list = games[liveGameID].players.list.filter(p => p.name !== lobby[userID].name)
+                    games[liveGameID].players.joined--
+                    delete rooms[liveGameID][userID]
 
-                    sendRoom(activeGame.id, { command: 'UPDT_GAME', game: activeGame })
+                    sendRoom(liveGameID, { command: 'UPDT_GAME', game: games[liveGameID] })
                 }
 
                 sendLobby({ command: 'UPDT_GAMES', games })
             } else {
-                const liveGameID = lobby[userID].activeGameID
-
                 if (liveGames[liveGameID].players.joined === 1) {
                     delete rooms[liveGameID]
                     delete liveGames[liveGameID]
@@ -300,7 +337,7 @@ wss.on('connection', (ws) => {
                 }
             }
 
-            lobby[userID].activeGameID = ''
+            lobby[userID].gameID = ''
         }
 
         delete lobby[userID]
