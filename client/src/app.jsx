@@ -56,8 +56,18 @@ export const App = () => {
         }
     }
 
+    const getOS = () => {
+        const UA = navigator.userAgent
+        const OS = ['Windows', 'Unix', 'Mac', 'Linux']
+
+        if ((/iPad|iPhone|iPod/.test(UA) && !window.MSStream) || (UA.includes('Mac') && 'ontouchend' in document)) return 'iOS'
+        if (new RegExp('Android', 'i').test(UA)) return 'Android'
+        for (let i = 0; i < OS.length; i++) if (new RegExp(OS[i], 'i').test(UA)) return 'PC'
+    }
+
+
     useEffect(() => {
-        setTimeout(() => ws.send(JSON.stringify({ command: 'INIT_PLYR' })), 500)
+        setTimeout(() => ws.send(JSON.stringify({ command: 'INIT_PLYR', os: getOS() })), 500)
     }, [])
 
 

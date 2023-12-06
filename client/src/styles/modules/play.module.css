@@ -65,6 +65,7 @@
     font-size: 13px;
     font-weight: 400;
     color: var(--secondary-label);
+    white-space: nowrap;
 }
 
 .playWrapper {
@@ -91,12 +92,6 @@
     backdrop-filter: saturate(180%);
     -webkit-backdrop-filter: saturate(180%);
     background-color: var(--thin-material);
-    cursor: pointer;
-    transition: all .2s ease-in-out;
-}
-
-.playGame:hover {
-    background-color: var(--ultrathin-material);
     transition: all .2s ease-in-out;
 }
 

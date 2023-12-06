@@ -1,5 +1,6 @@
-import { useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
+import { gsap } from 'gsap'
 import { useSnapshot } from 'valtio'
 import { STIndicator, STUI } from '../stores/app.store'
 
@@ -31,12 +32,8 @@ export const CamCon = ({ core }) => {
         if (core.isMobile) {
             pos = [0, 1, 80]
         } else {
-            if (SSIndicator.id) {
-                if (SSUI.value.name === 'Game') {
-                    pos = [0, 10 + SSIndicator.players.all * 2.5, 0]
-                } else {
-                    pos = [0, 1, 10 + SSIndicator.players.all]
-                }
+            if (SSUI.value.name !== 'Game') {
+                pos = [0, 1, 10 + SSIndicator.players.all]
             } else {
                 pos = [0, 1, 12]
             }
@@ -44,6 +41,13 @@ export const CamCon = ({ core }) => {
 
         return pos
     }
+
+
+    useEffect(() => {
+        if (SSUI.value.name === 'Game') {
+            gsap.to(camera.current.position, { duration: 2, x: 0, y: 10 + SSIndicator.players.all * 2.5, z: 0 })
+        }
+    }, [SSUI.value.name])
 
 
     return (

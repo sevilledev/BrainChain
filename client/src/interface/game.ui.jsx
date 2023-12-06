@@ -249,6 +249,7 @@ const Finish = () => {
 const Board = () => {
     const SSGame = useSnapshot(STGame)
     const SSIndicator = useSnapshot(STIndicator)
+    const SSProfile = useSnapshot(STProfile)
 
 
     const leaveGame = () => {
@@ -265,7 +266,10 @@ const Board = () => {
 
         SSIndicator.players.list.forEach((player) => {
             stats.push({
+                id: player.id,
                 name: player.name,
+                color: player.color,
+                os: player.os,
                 correct: SSIndicator.answers[player.id].filter(a => a.isTrue).length,
                 wrong: SSIndicator.answers[player.id].filter(a => a.isTrue === false).length,
                 empty: SSIndicator.answers[player.id].filter(a => a.isTrue === null).length,
@@ -282,28 +286,53 @@ const Board = () => {
             <button className={sty.leaveBtn} onClick={() => leaveGame()}>
                 <Icon name='exit-o' size={24} color='--system-red' />
             </button>
-            <h1 className={sty.boardLbl}>Leaderboard</h1>
-            <div className={sty.boardHeader}>
-                <h3 className={sty.orderLbl}>Ranking</h3>
-                <h3 className={sty.nameLbl}>Name</h3>
-                <h3 className={sty.correctLbl}>Correct</h3>
-                <h3 className={sty.wrongLbl}>Wrong</h3>
-                <h3 className={sty.emptyLbl}>Empty</h3>
-                <h3 className={sty.progressLbl}>Progress</h3>
-            </div>
-            <div className={sty.boardList}>
-                {SSGame.stats.map((player, index) => {
-                    return (
-                        <div className={sty.boardItem} key={index}>
-                            <h3 className={sty.order}>{index + 1}</h3>
-                            <h3 className={sty.name}>{player.name}</h3>
-                            <h3 className={sty.correct}>{player.correct}</h3>
-                            <h3 className={sty.wrong}>{player.wrong}</h3>
-                            <h3 className={sty.empty}>{player.empty}</h3>
-                            <h3 className={sty.progress}>{player.progress}</h3>
-                        </div>
-                    )
-                })}
+
+            <div className={sty.table}>
+                <div className={sty.tableHead}>
+                    <div className={sty.tableHeadLbl}>
+                        <Icon name='podium-o' size={30} color='--system-blue' />
+                    </div>
+                    <div className={sty.tableHeadLbl} style={{ width: 250 }} >
+                    </div>
+                    <div className={sty.tableHeadLbl}>
+                        <Icon name='checkmark-circle-o' size={30} color='--system-green' />
+                    </div>
+                    <div className={sty.tableHeadLbl}>
+                        <Icon name='close-circle-o' size={30} color='--system-red' />
+                    </div>
+                    <div className={sty.tableHeadLbl}>
+                        <Icon name='ellipse-o' size={30} color='--white' />
+                    </div>
+                    <div className={sty.tableHeadLbl} style={{ width: 140 }} >
+                        <Icon name='timer-o' size={30} color='--white' />
+                    </div>
+                    <div className={sty.tableHeadLbl}>
+                        <Icon name='game-controller-o' size={30} color='--system-yellow' />
+                    </div>
+                </div>
+
+                <div className={sty.tableBody}>
+                    {SSGame.stats.map((player, index) => {
+                        return (
+                            <div className={sty.tableBodyRow} key={index} style={{ backgroundColor: player.id === SSProfile.id ? 'var(--primary-fill)' : 'transparent' }}>
+                                <h4 className={sty.tableBodyLbl}>{index + 1}</h4>
+                                <div style={{ alignItems: 'center', width: 250 }}>
+                                    <Icon name='person-circle-o' size={30} color={player.color} />
+                                    <h4 className={sty.tableBodyLbl} style={{ width: '100%', paddingLeft: 5, textAlign: 'left' }}>{player.name}</h4>
+                                </div>
+                                <h4 className={sty.tableBodyLbl}>{player.correct}</h4>
+                                <h4 className={sty.tableBodyLbl}>{player.wrong}</h4>
+                                <h4 className={sty.tableBodyLbl}>{player.empty}</h4>
+                                <h4 className={sty.tableBodyLbl} style={{ width: 140 }}>{player.progress}</h4>
+                                <div style={{ alignItems: 'center', padding: 10 }}>
+                                    {player.os === 'iOS' && <Icon name='logo-apple' size={30} color='--white' />}
+                                    {player.os === 'Android' && <Icon name='logo-android' size={30} color='--system-green' />}
+                                    {player.os === 'PC' && <Icon name='desktop' size={30} color='--system-gray1' />}
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
             </div>
         </div>
     )
@@ -311,6 +340,9 @@ const Board = () => {
 
 
 export const Game = ({ ws }) => {
+    const SSGame = useSnapshot(STGame)
+
+
     useEffect(() => {
         return () => {
             Object.assign(STGame, { quiz: [], answers: [], questIndex: 0, ui: 'Countdown', stats: [] })
@@ -320,7 +352,7 @@ export const Game = ({ ws }) => {
 
 
     return (
-        <div className={sty.game}>
+        <div className={SSGame.ui === 'Board' ? sty.game : sty.gameBlur}>
             <Router>
                 <Countdown name='Countdown' />
                 <Quiz name='Quiz' ws={ws} />

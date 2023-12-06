@@ -5,10 +5,22 @@
     flex-direction: column;
     width: 100%;
     height: 100%;
+    overflow-y: hidden;
+    transition: all 2s ease-in-out;
+}
+
+.gameBlur {
+    position: absolute;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
     background-color: var(--thin-material);
     overflow-y: hidden;
+    transition: all 2s ease-in-out;
 }
 
 .countdown {
@@ -254,91 +266,46 @@
     border-radius: 25px;
     background-color: #FF453A2B;
 }
-
-.boardLbl {
-    font-size: 70px;
-    font-weight: 600;
-    color: var(--system-blue);
-}
-
-.boardHeader {
-    align-items: center;
-    justify-content: space-evenly;
-    width: 100%;
-    margin-top: 80px;
-}
-
-.orderLbl {
-    font-size: 24px;
-    font-weight: 600;
-}
-
-.nameLbl {
-    font-size: 24px;
-    font-weight: 600;
-}
-
-.correctLbl {
-    font-size: 24px;
-    font-weight: 600;
-}
-
-.wrongLbl {
-    font-size: 24px;
-    font-weight: 600;
-}
-
-.emptyLbl {
-    font-size: 24px;
-    font-weight: 600;
-}
-
-.progressLbl {
-    font-size: 24px;
-    font-weight: 600;
-}
-
-.boardList {
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    gap: 20px;
-    margin-top: 50px;
-}
-
-.boardItem {
-    align-items: center;
-    justify-content: space-evenly;
-    width: 100%;
-}
-
-.order {
-    font-size: 20px;
-    font-weight: 500;
-}
-
-.name {
-    font-size: 20px;
-    font-weight: 500;
-}
-
-.correct {
-    font-size: 20px;
-    font-weight: 500;
-}
-
-.wrong {
-    font-size: 20px;
-    font-weight: 500;
-}
-
-.empty {
-    font-size: 20px;
-    font-weight: 500;
-}
-
-.progress {
-    font-size: 20px;
-    font-weight: 500;
+ 
+.table { 
+    flex-direction: column; 
+    border-radius: 14px; 
+    color: var(--primary-label); 
+    overflow: hidden; 
+    backdrop-filter: saturate(180%) blur(20px); 
+    -webkit-backdrop-filter: saturate(180%) blur(20px); 
+    background-color: var(--ultrathin-material); 
+} 
+ 
+.tableHead { 
+    background-color: var(--ultrathin-material); 
+    align-items: center; 
+    padding: 5px 10px; 
+} 
+ 
+.tableHeadRow {} 
+ 
+.tableHeadLbl { 
+    align-items: center; 
+    justify-content: center; 
+    padding: 10px; 
+} 
+ 
+.tableBody { 
+    flex-direction: column; 
+    width: 100%; 
+    padding: 10px; 
+} 
+ 
+.tableBodyRow { 
+    align-items: center; 
+    border-radius: 8px; 
+} 
+ 
+.tableBodyLbl { 
+    font-size: 22px; 
+    font-weight: 500; 
+    padding: 10px; 
+    text-align: center; 
+    width: 50px; 
 }

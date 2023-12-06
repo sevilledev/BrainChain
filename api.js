@@ -177,7 +177,8 @@ wss.on('connection', (ws) => {
                 gameID: '',
                 balance: 100,
                 color: genColor(),
-                name: `Guest #${Math.round(Math.random() * 10000 - 1).toString().padEnd(4, '0')}`
+                name: `Guest #${Math.round(Math.random() * 10000 - 1).toString().padEnd(4, '0')}`,
+                os: req.os
             }
 
             Object.assign(ws, user)
@@ -219,7 +220,7 @@ wss.on('connection', (ws) => {
 
             lobby[userID].gameID = req.id
             rooms[req.id][userID] = ws
-            games[req.id].players.list.push({ id: userID, name: req.name, color: req.color, isFinished: false })
+            games[req.id].players.list.push({ id: userID, name: req.name, color: req.color, os: lobby[userID].os, isFinished: false })
             games[req.id].players.joined++
             games[req.id].answers[userID] = Array(games[req.id].duration).fill({ answer: '', isTrue: null })
 
@@ -257,7 +258,7 @@ wss.on('connection', (ws) => {
                 topic: req.game.topic,
                 duration: req.game.duration,
                 token: req.game.token,
-                players: { all: req.game.players.all, joined: 1, list: [{ id: userID, name: req.user.name, color: req.user.color, isFinished: false }] },
+                players: { all: req.game.players.all, joined: 1, list: [{ id: userID, name: req.user.name, color: req.user.color, os: lobby[userID].os, isFinished: false }] },
                 answers: { [userID]: Array(req.game.duration).fill({ answer: '', isTrue: null }) }
             }
 
