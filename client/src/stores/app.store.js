@@ -14,8 +14,8 @@ export const STFilters = proxy({ topic: 'All', players: 'All', duration: 'All', 
 
 export const STIndicator = proxy({ id: '', topic: { name: 'Anatomy', icon: 'body' }, duration: 5, token: 20, players: { all: 2, joined: 0, list: [] }, answers: {} })
 
-export const STGame = proxy(({ quiz: [], answers: [], questIndex: 0, ui: 'Countdown', stats: [] }))
+export const STGame = proxy(({ quiz: [], answers: [], questIndex: 0, ui: 'Countdown', stats: [], winner: {} }))
 
-export const STClock = proxy({ countdown: 3, timer: 0 })
+export const STClock = proxy({ countdown: 5, timer: 0 })
 
 export const STGames = proxy({ all: [], filtered: [] })

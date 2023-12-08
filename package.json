@@ -5,7 +5,8 @@
     "main": "api.js",
     "scripts": {
         "dev": "nodemon api",
-        "client": "cd client && npm run dev"
+        "client": "cd client && npm run dev",
+        "build": "cd client && npm run build && cd .. && node api"
     },
     "author": "Sevil Rasulova & Ali Mammadli",
     "license": "ISC",

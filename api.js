@@ -1,10 +1,14 @@
 const { WebSocketServer, WebSocket } = require('ws')
 const { genRandom, genGame, genColor } = require('./helpers/core.helpers')
+const { createServer } = require('http')
 const express = require('express')
 const cors = require('cors')
+const path = require('path')
 
 const app = express()
-const wss = new WebSocketServer({ port: 50001 })  // on production: 3001
+const server = createServer(app)
+const wss = new WebSocketServer({ server })
+const PORT = process.env.PORT || 50000
 
 
 
@@ -13,7 +17,7 @@ const wss = new WebSocketServer({ port: 50001 })  // on production: 3001
 const lobby = {}
 const rooms = {}
 const liveGames = {}
-const games = genGame(50)
+const games = genGame(10)
 
 
 
@@ -287,10 +291,11 @@ wss.on('connection', (ws) => {
 
                 liveGames[req.id].players.list.forEach((player) => {
                     lobby[player.id].gameID = ''
-                    
+
                     stats.push({
                         id: player.id,
                         name: player.name,
+                        color: player.color,
                         correct: liveGames[req.id].answers[player.id].filter(a => a.isTrue).length,
                         wrong: liveGames[req.id].answers[player.id].filter(a => a.isTrue === false).length,
                     })
@@ -354,9 +359,11 @@ wss.on('connection', (ws) => {
 
 app.get('/api', (req, res) => res.json({ message: 'From api with love' }))
 
+app.use('/', express.static(path.join(`${__dirname}/client/dist`)))
+app.get('*', (req, res) => res.sendFile(path.join(`${__dirname}/client/dist`)))
+
 
 
 // Server
 
-const PORT = 50000 // on production: 3000
-app.listen(PORT, '0.0.0.0', () => init())
+server.listen(PORT, '0.0.0.0', () => init())

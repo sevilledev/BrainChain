@@ -79,16 +79,23 @@
 /* Quiz Question */
 
 .quizQuest {
+    position: absolute;
+    top: 50%;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     width: 50%;
+    margin-left: 50%;
+    transform: translateX(-50%);
 }
 
 .quest {
+    position: absolute;
+    top: -230px;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: 180px;
     text-align: center;
 }
 
@@ -106,16 +113,16 @@
 }
 
 .choices {
+    width: 70%;
     flex-wrap: wrap;
     gap: 30px;
-    margin-top: 100px;
 }
 
 .choice {
     flex-basis: calc(50% - 15px);
     align-items: center;
     justify-content: center;
-    min-width: 60px;
+    width: 250px;
     height: 60px;
     border-radius: 30px;
     background-color: var(--ultrathin-material);
@@ -184,32 +191,11 @@
 
 
 
-/* Lost */
+/* Winner */
 
-.lost {
+.winner {
     align-items: center;
     justify-content: center;
-}
-
-.lostLbl {
-    font-size: 100px;
-    font-weight: 600;
-    color: var(--system-red);
-}
-
-
-
-/* Win */
-
-.win {
-    align-items: center;
-    justify-content: center;
-}
-
-.winLbl {
-    font-size: 100px;
-    font-weight: 600;
-    color: var(--system-green);
 }
 
 
@@ -253,59 +239,69 @@
     width: 100%;
     height: 100%;
 }
+ 
+.table {
+    position: relative;
+    align-items: center;
+    flex-direction: column;
+    border-radius: 14px;
+    color: var(--primary-label);
+    background-color: var(--ultrathin-material);
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+ 
+.tableHead {
+    align-items: center;
+    padding: 5px 10px;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    background-color: var(--ultrathin-material);
+}
+
+.tableHeadRow {}
+
+.tableHeadLbl {
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.tableBody {
+    flex-direction: column;
+    width: 100%;
+    padding: 10px;
+}
+
+.tableBodyRow {
+    align-items: center;
+    border-radius: 8px;
+}
+
+.tableBodyLbl {
+    font-size: 22px;
+    font-weight: 500;
+    padding: 10px;
+    text-align: center;
+    width: 50px;
+}
 
 .leaveBtn {
     display: flex;
-    position: fixed;
-    top: 20px;
-    right: 20px;
+    position: absolute;
+    bottom: -80px;
     align-items: center;
     justify-content: center;
-    width: 50px;
     height: 50px;
+    padding: 0 40px;
     border-radius: 25px;
     background-color: #FF453A2B;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
 }
- 
-.table { 
-    flex-direction: column; 
-    border-radius: 14px; 
-    color: var(--primary-label); 
-    overflow: hidden; 
-    backdrop-filter: saturate(180%) blur(20px); 
-    -webkit-backdrop-filter: saturate(180%) blur(20px); 
-    background-color: var(--ultrathin-material); 
-} 
- 
-.tableHead { 
-    background-color: var(--ultrathin-material); 
-    align-items: center; 
-    padding: 5px 10px; 
-} 
- 
-.tableHeadRow {} 
- 
-.tableHeadLbl { 
-    align-items: center; 
-    justify-content: center; 
-    padding: 10px; 
-} 
- 
-.tableBody { 
-    flex-direction: column; 
-    width: 100%; 
-    padding: 10px; 
-} 
- 
-.tableBodyRow { 
-    align-items: center; 
-    border-radius: 8px; 
-} 
- 
-.tableBodyLbl { 
-    font-size: 22px; 
-    font-weight: 500; 
-    padding: 10px; 
-    text-align: center; 
-    width: 50px; 
+
+.leaveBtnLbl {
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--system-red);
 }

@@ -10,6 +10,7 @@
 .games {
     flex-wrap: wrap;
     justify-content: center;
+    width: 80%;
     padding: 150px 20px 30px;
     gap: 20px;
     overflow-y: auto;

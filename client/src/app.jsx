@@ -9,7 +9,7 @@ import { Alert } from './components/core.cmp'
 const core = {}
 try { document.createEvent('TouchEvent'); core.isMobile = true } catch (e) { core.isMobile = false }
 
-const ws = new WebSocket(`ws://${window.location.hostname}:50001`)  // on production: 3001
+const ws = new WebSocket(`ws://${window.location.hostname}:50000`)
 
 
 export const App = () => {
@@ -51,8 +51,14 @@ export const App = () => {
         } else if (res.command === 'UPDT_PLYRS') {
             STIndicator.players = res.players
         } else if (res.command === 'FNSH_GAME') {
-            STProfile.gameID = ''
-            STGame.ui = res.winner.id === STProfile.id ? 'Win' : 'Lost'
+            setTimeout(() => {
+                if (STProfile.gameID !== '') {
+                    STProfile.gameID = ''
+                    STGame.winner = res.winner
+                    STGame.ui = 'Winner'
+                    STScene.name = 'Winner'
+                }
+            }, STGame.ui !== 'Board' ? 2000 : 0)
         }
     }
 

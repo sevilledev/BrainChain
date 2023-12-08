@@ -3,9 +3,11 @@ import { CamCon } from './camcon.scn'
 import { Lights } from './lights.scn'
 import { Env } from './env.scn'
 import { Floor } from './floor.scn'
+import { Swap } from './swap.scn'
+
 import { Lobby } from './lobby.scn'
 import { Game } from './game.scn'
-import { Swap } from './swap.scn'
+import { Winner } from './winner.scn'
 
 
 
@@ -19,6 +21,7 @@ export const Scene = ({ core }) => {
             <Swap>
                 <Lobby name='Lobby' />
                 <Game name='Game' />
+                <Winner name='Winner' />
             </Swap>
         </Canvas>
     )

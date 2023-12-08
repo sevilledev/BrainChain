@@ -72,7 +72,7 @@ export const Controls = () => {
                     initial={{ y: -80 }}
                     animate={{ y: 0 }}
                     exit={{ y: -80 }}
-                    transition={{ ease: 'easeInOut', duration: 0.5, delay: 0.5 }}
+                    transition={{ duration: 0.8, delay: SSUI.history.index === 0 ? 2.2 : 0 }}
                 >
                     <div className={sty.profile}>
                         <Icon name='person-circle-o' size={30} color='--white' />

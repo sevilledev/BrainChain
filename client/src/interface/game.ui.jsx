@@ -27,8 +27,8 @@ const Countdown = () => {
     useEffect(() => {
         interval = setInterval(() => {
             if (SSClock.countdown > 1) {
-                countdownAnim.set({ opacity: 1 })
-                countdownAnim.start({ opacity: 0 })
+                countdownAnim.set({ opacity: 1, scale: 1 })
+                countdownAnim.start({ opacity: 0, scale: 0.6 })
                 STClock.countdown = SSClock.countdown - 1
             } else {
                 clearInterval(interval)
@@ -162,6 +162,7 @@ const Quiz = ({ ws }) => {
                         <Icon name='chevron-down' size={36} color='--system-blue' />
                     </button>
                 </div>
+
                 <div className={sty.quizQuest}>
                     <div className={sty.quest}>
                         <h2 className={sty.questLbl}>{SSGame.quiz[SSGame.questIndex].quest}</h2>
@@ -180,6 +181,7 @@ const Quiz = ({ ws }) => {
                         })}
                     </div>
                 </div>
+
                 <div className={sty.quizTimer}>
                     <h1 className={sty.timerLbl} style={{ color: SSClock.timer > 10 ? 'var(--white)' : 'var(--system-red)' }}>{SSClock.timer}</h1>
                     <div className={sty.timerBar}>
@@ -198,30 +200,6 @@ const Quiz = ({ ws }) => {
 }
 
 
-const Lost = () => {
-    useEffect(() => { setTimeout(() => STGame.ui = 'Board', 2000) }, [])
-
-
-    return (
-        <div className={sty.lost}>
-            <h1 className={sty.lostLbl}>You Lost</h1>
-        </div>
-    )
-}
-
-
-const Win = () => {
-    useEffect(() => { setTimeout(() => STGame.ui = 'Board', 2000) }, [])
-
-
-    return (
-        <div className={sty.win}>
-            <h1 className={sty.winLbl}>You Win</h1>
-        </div>
-    )
-}
-
-
 const Timeout = () => {
     useEffect(() => { setTimeout(() => STGame.ui = 'Board', 2000) }, [])
 
@@ -235,7 +213,7 @@ const Timeout = () => {
 
 
 const Finish = () => {
-    useEffect(() => { setTimeout(() => STGame.ui = 'Board', 2000) }, [])
+    useEffect(() => { setTimeout(() => { if (STGame.ui !== 'Winner') STGame.ui = 'Board' }, 2000) }, [])
 
 
     return (
@@ -243,6 +221,15 @@ const Finish = () => {
             <h1 className={sty.finishLbl}>Finish</h1>
         </div>
     )
+}
+
+
+const Winner = () => {
+    useEffect(() => {
+        setTimeout(() => { STScene.name = 'Game'; STGame.ui = 'Board' }, 10000)
+    }, [])
+
+    return <div className={sty.winner}></div>
 }
 
 
@@ -283,10 +270,6 @@ const Board = () => {
 
     return (
         <div className={sty.board}>
-            <button className={sty.leaveBtn} onClick={() => leaveGame()}>
-                <Icon name='exit-o' size={24} color='--system-red' />
-            </button>
-
             <div className={sty.table}>
                 <div className={sty.tableHead}>
                     <div className={sty.tableHeadLbl}>
@@ -333,6 +316,10 @@ const Board = () => {
                         )
                     })}
                 </div>
+
+                <button className={sty.leaveBtn} onClick={() => leaveGame()}>
+                    <h2 className={sty.leaveBtnLbl}>Leave</h2>
+                </button>
             </div>
         </div>
     )
@@ -352,14 +339,13 @@ export const Game = ({ ws }) => {
 
 
     return (
-        <div className={SSGame.ui === 'Board' ? sty.game : sty.gameBlur}>
+        <div className={['Winner', 'Board'].includes(SSGame.ui) ? sty.game : sty.gameBlur}>
             <Router>
                 <Countdown name='Countdown' />
                 <Quiz name='Quiz' ws={ws} />
-                <Lost name='Lost' />
-                <Win name='Win' />
                 <Timeout name='Timeout' />
                 <Finish name='Finish' />
+                <Winner name='Winner' />
                 <Board name='Board' />
             </Router>
         </div>
