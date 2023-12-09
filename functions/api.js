@@ -1,12 +1,14 @@
 const { WebSocketServer, WebSocket } = require('ws')
-const { genRandom, genGame, genColor } = require('./helpers/core.helpers')
-const { createServer } = require('http')
+const { genRandom, genGame, genColor } = require('../helpers/core.helpers')
+// const { createServer } = require('http')
+const serverless = require('serverless-http')
 const express = require('express')
 const cors = require('cors')
 const path = require('path')
 
 const app = express()
-const server = createServer(app)
+// const server = createServer(app)
+const server = serverless(app)
 const wss = new WebSocketServer({ server })
 const PORT = process.env.PORT || 50000
 
@@ -359,11 +361,12 @@ wss.on('connection', (ws) => {
 
 app.get('/api', (req, res) => res.json({ message: 'From api with love' }))
 
-app.use('/', express.static(path.join(`${__dirname}/client/dist`)))
-app.get('*', (req, res) => res.sendFile(path.join(`${__dirname}/client/dist`)))
+app.use('/', express.static(path.join(__dirname, '..', '/client/dist')))
+app.get('*', (req, res) => res.sendFile(path.join(__dirname, '..', '/client/dist')))
 
 
 
 // Server
 
-server.listen(PORT, '0.0.0.0', () => init())
+// server.listen(PORT, '0.0.0.0', () => init())
+module.exports.handler = server

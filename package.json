@@ -2,17 +2,19 @@
     "name": "brainchain",
     "version": "0.0.1",
     "description": "Brain Chain Game",
-    "main": "api.js",
+    "main": "functions/api.js",
     "scripts": {
-        "dev": "nodemon api",
+        "dev": "nodemon functions/api",
         "client": "cd client && npm run dev",
-        "build": "cd client && npm i && npm run build && cd .. && node api"
+        "build": "netlify deploy --prod",
+        "build-prod": "cd client && npm i && npm run build && cd .. && node functions/api"
     },
     "author": "Sevil Rasulova & Ali Mammadli",
     "license": "ISC",
     "dependencies": {
         "cors": "^2.8.5",
         "express": "^4.18.2",
+        "serverless-http": "^3.2.0",
         "ws": "^8.14.2"
     },
     "devDependencies": {
