@@ -6,7 +6,7 @@
     "scripts": {
         "dev": "nodemon api",
         "client": "cd client && npm run dev",
-        "build": "cd client && npm i && npm run build",
+        "build": "cd client && npm i && npm run build && cd .. && node api",
         "build-local": "cd client && npm i && npm run build && cd .. && node api"
     },
     "author": "Sevil Rasulova & Ali Mammadli",
