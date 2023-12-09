@@ -366,4 +366,5 @@ app.get('*', (req, res) => res.sendFile(path.join(`${__dirname}/client/dist`)))
 
 // Server
 
-server.listen(PORT, '0.0.0.0', () => init())
+// server.listen(PORT, '0.0.0.0', () => init())
+server.listen(PORT, () => init())
