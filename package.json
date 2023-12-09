@@ -6,8 +6,7 @@
     "scripts": {
         "dev": "nodemon functions/api",
         "client": "cd client && npm run dev",
-        "build": "netlify deploy --prod",
-        "build-prod": "cd client && npm i && npm run build && cd .. && node functions/api"
+        "build": "cd client && npm i && npm run build && cd .. && node functions/api"
     },
     "author": "Sevil Rasulova & Ali Mammadli",
     "license": "ISC",
