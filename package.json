@@ -2,11 +2,11 @@
     "name": "brainchain",
     "version": "0.0.1",
     "description": "Brain Chain Game",
-    "main": "functions/api.js",
+    "main": "api.js",
     "scripts": {
-        "dev": "nodemon functions/api",
+        "dev": "nodemon api",
         "client": "cd client && npm run dev",
-        "build": "cd client && npm i && npm run build && cd .. && node functions/api"
+        "build": "cd client && npm i && npm run build && cd .. && node api"
     },
     "author": "Sevil Rasulova & Ali Mammadli",
     "license": "ISC",
