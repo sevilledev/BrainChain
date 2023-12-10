@@ -16,6 +16,6 @@ export const STIndicator = proxy({ id: '', topic: { name: 'Anatomy', icon: 'body
 
 export const STGame = proxy(({ quiz: [], answers: [], questIndex: 0, ui: 'Countdown', stats: [], winner: {} }))
 
-export const STClock = proxy({ countdown: 5, timer: 0 })
+export const STClock = proxy({ countdown: 5, timer: 0, prevTimer: 0 })
 
 export const STGames = proxy({ all: [], filtered: [] })

@@ -113,7 +113,8 @@ const Quiz = ({ ws, core }) => {
         }
 
         if (choice === STGame.quiz[SSGame.questIndex].correct) {
-            STClock.timer = (SSClock.timer + 45) > (30 + STGame.quiz.length * 12) ? 30 + STGame.quiz.length * 12 + 1 : SSClock.timer + 45 + 1
+            STClock.prevTimer = SSClock.timer
+            STClock.timer += Math.round((SSClock.prevTimer - SSClock.timer) / 2 + 1)
         }
 
         ws.send(JSON.stringify({ command: 'SEND_ANSR', id: SSProfile.gameID, index: SSGame.questIndex, answer: choice }))
@@ -123,7 +124,8 @@ const Quiz = ({ ws, core }) => {
 
 
     useEffect(() => {
-        STClock.timer = 30 + STGame.quiz.length * 12
+        STClock.timer = 30 + STGame.quiz.length * 6
+        STClock.prevTimer = 30 + STGame.quiz.length * 6
     }, [])
 
     useEffect(() => {
@@ -131,7 +133,7 @@ const Quiz = ({ ws, core }) => {
             if (SSClock.timer > 0) {
                 timerAnim.set({ opacity: 1 })
                 timerAnim.start({ opacity: 0 })
-                barAnim.start({ height: (400 * SSClock.timer / (30 + STGame.quiz.length * 12)), backgroundColor: `hsl(${100 * SSClock.timer / (30 + STGame.quiz.length * 12)} 100% 50%)` })
+                barAnim.start({ height: (400 * SSClock.timer / (30 + STGame.quiz.length * 6)), backgroundColor: `hsl(${100 * SSClock.timer / (30 + STGame.quiz.length * 6)} 100% 50%)` })
                 STClock.timer = SSClock.timer - 1
             } else {
                 clearInterval(interval)
