@@ -52,10 +52,6 @@ exports.genGame = (count = 20) => {
             icon: 'compass'
         },
         {
-            name: 'Language',
-            icon: 'language'
-        },
-        {
             name: 'Mathematics',
             icon: 'calculator'
         },

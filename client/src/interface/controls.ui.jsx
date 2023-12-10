@@ -7,7 +7,7 @@ import { Icon } from '../components/core.cmp'
 import sty from '../styles/modules/controls.module.css'
 
 
-export const Controls = () => {
+export const Controls = ({ core }) => {
     const SSUI = useSnapshot(STUI)
     const SSGames = useSnapshot(STGames)
     const SSProfile = useSnapshot(STProfile)
@@ -17,6 +17,26 @@ export const Controls = () => {
     const activeNavs = useAnimation()
 
     const navs = ['Play', 'Join', 'Discover', 'Tournaments', 'Community']
+
+
+    const Profile = () => {
+        return (
+            <div className={sty.profile}>
+                <Icon name='person-circle-o' size={30} color='--white' />
+                {SSProfile.isGuest && <h5 className={sty.profileLbl}>Guest</h5>}
+            </div>
+        )
+    }
+
+
+    const Balance = () => {
+        return (
+            <div className={sty.balance}>
+                <h5 className={sty.balanceLbl}>{SSProfile.balance}</h5>
+                <Icon name='brain-token' size={24} color='--system-pink' />
+            </div>
+        )
+    }
 
 
     const filterVt = (margin = 10, index) => {
@@ -32,7 +52,7 @@ export const Controls = () => {
         let { topic, players, duration, token } = SSFilters
 
         if (filter === 'topic') {
-            const topics = ['All', 'Anatomy', 'Astronomy', 'Economics', 'Geography', 'Language', 'Mathematics', 'Mixed', 'Music', 'Sports']
+            const topics = ['All', 'Anatomy', 'Astronomy', 'Economics', 'Geography', 'Mathematics', 'Mixed', 'Music', 'Sports']
             topic = topics.at(1 + topics.indexOf(SSFilters.topic) - topics.length)
             STFilters.topic = topic
         } else if (filter === 'players') {
@@ -68,17 +88,15 @@ export const Controls = () => {
     return (
         <div className={sty.controlsHitSlop}>
             <AnimatePresence>
-                {SSUI.value.showControls && <motion.div className={sty.controls}
-                    initial={{ y: -80 }}
+                {SSUI.value.showControls && <motion.div className={sty.controls} style={{ flexDirection: core.isMobile ? 'column' : 'row' }}
+                    initial={{ y: -115 }}
                     animate={{ y: 0 }}
-                    exit={{ y: -80 }}
+                    exit={{ y: -115 }}
                     transition={{ duration: 0.8, delay: SSUI.history.index === 0 ? 2.2 : 0 }}
                 >
-                    <div className={sty.profile}>
-                        <Icon name='person-circle-o' size={30} color='--white' />
-                        {SSProfile.isGuest && <h5 className={sty.profileLbl}>Guest</h5>}
-                    </div>
-                    <div className={sty.navbar}>
+                    {!core.isMobile && <Profile />}
+
+                    <div className={sty.navbar} style={{ transform: `scale(${core.isMobile ? 0.60 : 1})` }}>
                         <div className={sty.menu}>
                             <div className={sty.menuIc} onClick={() => STUI.value.name = 'Home'} >
                                 <Icon name='grid' size={24} color='--primary-tint' />
@@ -136,11 +154,11 @@ export const Controls = () => {
                                     onClick={() => changeFilter('duration')}
                                 >
                                     <div className={sty.filterIc}>
-                                        <Icon name='timer-o' size={24} color='--primary-label' />
+                                        <Icon name='reader' size={24} color='--primary-label' />
                                     </div>
                                     <div className={sty.filterBody}>
-                                        <h4 className={sty.filterTtl}>Duration</h4>
-                                        <h5 className={sty.filterSbtl}>{`${SSFilters.duration}${SSFilters.duration !== 'All' ? ' min' : ''}`}</h5>
+                                        <h4 className={sty.filterTtl}>Questions</h4>
+                                        <h5 className={sty.filterSbtl}>{`${SSFilters.duration}${SSFilters.duration !== 'All' ? ' questions' : ''}`}</h5>
                                     </div>
                                 </motion.div>
                                 <motion.div className={sty.filter}
@@ -161,10 +179,13 @@ export const Controls = () => {
                             </motion.div>}
                         </AnimatePresence>
                     </div>
-                    <div className={sty.balance}>
-                        <h5 className={sty.balanceLbl}>{SSProfile.balance}</h5>
-                        <Icon name='brain-token' size={24} color='--system-pink' />
-                    </div>
+
+                    {core.isMobile && <div className={sty.mobNav}>
+                        <Profile />
+                        <Balance />
+                    </div>}
+
+                    {!core.isMobile && <Balance />}
                 </motion.div>}
             </AnimatePresence>
         </div>

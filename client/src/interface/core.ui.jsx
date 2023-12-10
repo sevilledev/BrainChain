@@ -9,16 +9,16 @@ import { Controls } from './controls.ui'
 import { Indicator } from './indicator.ui'
 
 
-export const Interface = ({ ws }) => {
+export const Interface = ({ ws, core }) => {
     return (
         <>
             <Router>
                 <Home name='Home' />
-                <Play name='Play' ws={ws} />
-                <Join name='Join' ws={ws} />
-                <Game name='Game' ws={ws} />
+                <Play name='Play' ws={ws} core={core} />
+                <Join name='Join' ws={ws} core={core} />
+                <Game name='Game' ws={ws} core={core} />
             </Router>
-            <Controls />
+            <Controls core={core} />
             <Indicator />
         </>
     )

@@ -9,8 +9,10 @@ import { Alert } from './components/core.cmp'
 const core = {}
 try { document.createEvent('TouchEvent'); core.isMobile = true } catch (e) { core.isMobile = false }
 
-// const ws = new WebSocket(`ws://${window.location.hostname}:50000`)
-const ws = new WebSocket(`wss://${window.location.hostname}`)
+const ws = new WebSocket(`ws://${window.location.hostname}:50000`)
+
+// On Production
+// const ws = new WebSocket(`wss://${window.location.hostname}`)
 
 
 export const App = () => {
@@ -81,7 +83,7 @@ export const App = () => {
     return (
         <>
             <Scene core={core} />
-            <Interface ws={ws} />
+            <Interface ws={ws} core={core} />
             <Alert.Container />
         </>
     )

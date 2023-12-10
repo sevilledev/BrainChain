@@ -63,6 +63,14 @@
     background-color: var(--thin-material);
 }
 
+.mobNav {
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: -20px;
+    transform: scale(0.60);
+}
+
 .menu {
     border-radius: 25px;
     backdrop-filter: saturate(180%) blur(20px);

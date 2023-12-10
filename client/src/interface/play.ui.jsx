@@ -6,7 +6,7 @@ import { Icon, Matrix } from '../components/core.cmp'
 import sty from '../styles/modules/play.module.css'
 
 
-export const Play = ({ ws }) => {
+export const Play = ({ ws, core }) => {
     const SSIndicator = useSnapshot(STIndicator)
     const SSProfile = useSnapshot(STProfile)
 
@@ -15,7 +15,6 @@ export const Play = ({ ws }) => {
         'Astronomy': 'planet',
         'Economics': 'bar-chart',
         'Geography': 'compass',
-        'Language': 'language',
         'Mathematics': 'calculator',
         'Mixed': 'earth',
         'Music': 'musical-notes',
@@ -25,7 +24,7 @@ export const Play = ({ ws }) => {
 
     const changeFilter = (filter) => {
         if (filter === 'topic') {
-            const topics = ['Anatomy', 'Astronomy', 'Economics', 'Geography', 'Language', 'Mathematics', 'Mixed', 'Music', 'Sports']
+            const topics = ['Anatomy', 'Astronomy', 'Economics', 'Geography', 'Mathematics', 'Mixed', 'Music', 'Sports']
             let newTopic = topics.at(1 + topics.indexOf(SSIndicator.topic.name) - topics.length)
             STIndicator.topic = { name: newTopic, icon: icons[newTopic] }
         } else if (filter === 'players') {
@@ -51,7 +50,7 @@ export const Play = ({ ws }) => {
 
     return (
         <div className={sty.play}>
-            <div className={sty.playCenter}>
+            <div className={sty.playCenter} style={{ width: 355, transform: `scale(${core.isMobile ? 0.65 : 1})` }}>
                 <AnimatePresence>
                     {!SSProfile.gameID && <motion.div className={sty.filters}
                         initial={{ opacity: 0 }}
@@ -79,11 +78,11 @@ export const Play = ({ ws }) => {
                         </div>
                         <div className={sty.filter} onClick={() => changeFilter('duration')}>
                             <div className={sty.filterIc}>
-                                <Icon name='timer-o' size={24} color='--primary-label' />
+                                <Icon name='reader' size={24} color='--primary-label' />
                             </div>
                             <div className={sty.filterBody}>
-                                <h4 className={sty.filterTtl}>Duration</h4>
-                                <h5 className={sty.filterSbtl}>{`${SSIndicator.duration} min`}</h5>
+                                <h4 className={sty.filterTtl}>Questions</h4>
+                                <h5 className={sty.filterSbtl}>{`${SSIndicator.duration} questions`}</h5>
                             </div>
                         </div>
                         <div className={sty.filter} onClick={() => changeFilter('token')}>
@@ -110,7 +109,7 @@ export const Play = ({ ws }) => {
                         </div>
                         <div className={sty.playTopic}>
                             <h2 className={sty.playTopicLbl}>{SSIndicator.topic.name}</h2>
-                            <h5 className={sty.playDurationLbl}>{SSIndicator.duration} min</h5>
+                            <h5 className={sty.playDurationLbl}>{SSIndicator.duration} questions</h5>
                         </div>
                         <div className={sty.playPlayers}>
                             {Array(SSIndicator.players.all).fill().map((player, index) => {

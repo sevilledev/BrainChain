@@ -51,7 +51,7 @@ const Countdown = () => {
 }
 
 
-const Quiz = ({ ws }) => {
+const Quiz = ({ ws, core }) => {
     const SSClock = useSnapshot(STClock)
     const SSGame = useSnapshot(STGame)
     const SSProfile = useSnapshot(STProfile)
@@ -146,12 +146,12 @@ const Quiz = ({ ws }) => {
 
     return (
         <div className={sty.quiz}>
-            <div className={sty.quizBody}>
-                <div className={sty.quizNavbar}>
+            <div className={sty.quizBody} style={{ flexDirection: core.isMobile ? 'column-reverse' : 'row' }}>
+                <div className={sty.quizNavbar} style={{ flexDirection: core.isMobile ? 'row-reverse' : 'column', margin: core.isMobile ? '0 0 15px' : '0 0 0 20px', transform: `scale(${core.isMobile ? 0.65 : 1})` }}>
                     <button onClick={() => navigate('forward')}>
-                        <Icon name='chevron-up' size={36} color='--system-blue' />
+                        <Icon name={`chevron-${core.isMobile ? 'forward' : 'up'}`} size={36} color='--system-blue' />
                     </button>
-                    <div className={sty.quizNavList}>
+                    <div className={sty.quizNavList} style={{ flexDirection: core.isMobile ? 'row' : 'column-reverse' }}>
                         {SSGame.answers.map((answer, index) => {
                             return (
                                 <div className={sty.quizNav} key={index} style={getNavStyle(answer, index)} onClick={() => STGame.questIndex = index}></div>
@@ -159,31 +159,31 @@ const Quiz = ({ ws }) => {
                         })}
                     </div>
                     <button onClick={() => navigate('backward')}>
-                        <Icon name='chevron-down' size={36} color='--system-blue' />
+                        <Icon name={`chevron-${core.isMobile ? 'back' : 'down'}`} size={36} color='--system-blue' />
                     </button>
                 </div>
 
-                <div className={sty.quizQuest}>
-                    <div className={sty.quest}>
-                        <h2 className={sty.questLbl}>{SSGame.quiz[SSGame.questIndex].quest}</h2>
-                        {SSGame.quiz[SSGame.questIndex].hasContent && <h1 className={sty.questContent}>{SSGame.quiz[SSGame.questIndex].content}</h1>}
+                <div className={sty.quizQuest} style={{ width: core.isMobile ? '100%' : '50%', marginLeft: core.isMobile ? 0 : '50%', transform: core.isMobile ? 'none' : 'translateX(-50%)' }}>
+                    <div className={sty.quest} style={{ padding: core.isMobile ? 20 : 0 }}>
+                        <h2 className={sty.questLbl} style={{ fontSize: core.isMobile ? 28 : 36 }}>{SSGame.quiz[SSGame.questIndex].quest}</h2>
+                        {SSGame.quiz[SSGame.questIndex].hasContent && <h1 className={sty.questContent} style={{ fontSize: core.isMobile ? 36 : 40 }}>{SSGame.quiz[SSGame.questIndex].content}</h1>}
                     </div>
-                    <div className={sty.choices}>
+                    <div className={sty.choices} style={{ width: core.isMobile ? '100%' : '70%', padding: core.isMobile ? 20 : 0, gap: core.isMobile ? 20 : 30 }}>
                         {SSGame.quiz[SSGame.questIndex].choices.map((choice, index) => {
                             return (
                                 <div className={sty.choice} key={index}
-                                    style={{ backgroundColor: getChoiceStyle(choice) }}
+                                    style={{ width: core.isMobile ? '100%' : 250, height: core.isMobile ? 50 : 60, backgroundColor: getChoiceStyle(choice), flexBasis: core.isMobile ? 'auto' : 'calc(50% - 15px)' }}
                                     onClick={() => choose(choice)}
                                 >
-                                    <h3 className={sty.choiceLbl}>{choice}</h3>
+                                    <h3 className={sty.choiceLbl} style={{ fontSize: core.isMobile ? 26 : 30 }}>{choice}</h3>
                                 </div>
                             )
                         })}
                     </div>
                 </div>
 
-                <div className={sty.quizTimer}>
-                    <h1 className={sty.timerLbl} style={{ color: SSClock.timer > 10 ? 'var(--white)' : 'var(--system-red)' }}>{SSClock.timer}</h1>
+                <div className={sty.quizTimer} style={{ transform: core.isMobile ? 'rotate(90deg) scale(0.85)' : 'rotate(0) scale(1)', flexDirection: core.isMobile ? 'row-reverse' : 'column', height: core.isMobile ? 138 : 'unset' }}>
+                    <h1 className={sty.timerLbl} style={{ color: SSClock.timer > 10 ? 'var(--white)' : 'var(--system-red)', transform: core.isMobile ? 'rotate(-90deg)' : 'rotate(0)' }}>{SSClock.timer}</h1>
                     <div className={sty.timerBar}>
                         <motion.div className={sty.timerBarInd}
                             initial={{ height: '100%' }}
@@ -233,7 +233,7 @@ const Winner = () => {
 }
 
 
-const Board = () => {
+const Board = ({ core }) => {
     const SSGame = useSnapshot(STGame)
     const SSIndicator = useSnapshot(STIndicator)
     const SSProfile = useSnapshot(STProfile)
@@ -270,7 +270,7 @@ const Board = () => {
 
     return (
         <div className={sty.board}>
-            <div className={sty.table}>
+            <div className={sty.table} style={{ transform: `scale(${core.isMobile ? 0.54 : 1})` }}>
                 <div className={sty.tableHead}>
                     <div className={sty.tableHeadLbl}>
                         <Icon name='podium-o' size={30} color='--system-blue' />
@@ -326,7 +326,7 @@ const Board = () => {
 }
 
 
-export const Game = ({ ws }) => {
+export const Game = ({ ws, core }) => {
     const SSGame = useSnapshot(STGame)
 
 
@@ -342,11 +342,11 @@ export const Game = ({ ws }) => {
         <div className={['Winner', 'Board'].includes(SSGame.ui) ? sty.game : sty.gameBlur}>
             <Router>
                 <Countdown name='Countdown' />
-                <Quiz name='Quiz' ws={ws} />
+                <Quiz name='Quiz' ws={ws} core={core} />
                 <Timeout name='Timeout' />
                 <Finish name='Finish' />
                 <Winner name='Winner' />
-                <Board name='Board' />
+                <Board name='Board' core={core} />
             </Router>
         </div>
     )
