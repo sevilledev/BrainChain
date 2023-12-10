@@ -9,10 +9,10 @@ import { Alert } from './components/core.cmp'
 const core = {}
 try { document.createEvent('TouchEvent'); core.isMobile = true } catch (e) { core.isMobile = false }
 
-// const ws = new WebSocket(`ws://${window.location.hostname}:50000`)
+const ws = new WebSocket(`ws://${window.location.hostname}:50000`)
 
 // On Production
-const ws = new WebSocket(`wss://${window.location.hostname}`)
+// const ws = new WebSocket(`wss://${window.location.hostname}`)
 
 
 export const App = () => {
@@ -76,7 +76,13 @@ export const App = () => {
 
 
     useEffect(() => {
-        setTimeout(() => ws.send(JSON.stringify({ command: 'INIT_PLYR', os: getOS() })), 500)
+        const interval = setInterval(() => {
+            if (ws.readyState === 1) {
+                console.log('useeffect')
+                ws.send(JSON.stringify({ command: 'INIT_PLYR', os: getOS() }))
+                clearInterval(interval)
+            }
+        }, 10)
     }, [])
 
 
