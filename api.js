@@ -2453,7 +2453,7 @@ wss.on('connection', (ws) => {
     })
 
     ws.on('close', () => {
-        console.log(`[${lobby[userID].name}]\x1b[1;31m Disconnected\x1b[0m 💀`)
+        console.log(`[${lobby[userID]?.name}]\x1b[1;31m Disconnected\x1b[0m 💀`)
 
         const liveGameID = lobby[userID].gameID
 
@@ -2508,6 +2508,3 @@ app.get('*', (req, res) => res.sendFile(path.join(`${__dirname}/client/dist`)))
 // Server
 
 server.listen(PORT, '0.0.0.0', () => init())
-
-// On Production
-// server.listen(PORT, () => init())
