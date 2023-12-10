@@ -47,111 +47,6 @@ const sendRoom = (id, obj) => {
 }
 
 const getQuiz = (topic, count) => {
-    // const quiz = [
-    //     {
-    //         hasContent: false,
-    //         quest: 'Desert is to oasis as ocean is to:',
-    //         choices: ['Water', 'Sand', 'Sea', 'Island'],
-    //         correct: 'Island'
-    //     },
-    //     {
-    //         hasContent: true,
-    //         quest: 'Which number follows?',
-    //         content: '1, 4, 9, 16, 25',
-    //         contentType: 'text',
-    //         choices: ['27', '34', '36', '45'],
-    //         correct: '36'
-    //     },
-    //     {
-    //         hasContent: true,
-    //         quest: 'Choose the conclusion that validly follows from the argument:',
-    //         content: 'All kittens are playful. Some pets are kittens. Therefore:',
-    //         contentType: 'text',
-    //         choices: ['All kittens are pets', 'Some kittens are pets', 'All pets are playful', 'Some pets are playful'],
-    //         correct: 'Some pets are playful'
-    //     },
-    //     {
-    //         hasContent: false,
-    //         quest: 'You are building an open-ended (straight) fence by stringing wire between posts 25 meters apart. If the fence is 100 meters long how many posts should you use?',
-    //         choices: ['2', '3', '4', '5'],
-    //         correct: '5'
-    //     },
-    //     {
-    //         hasContent: true,
-    //         quest: 'Rearrange the letters and select the correct category.',
-    //         content: 'R A S P I',
-    //         contentType: 'text',
-    //         choices: ['City', 'Fruit', 'Animal', 'Vegetable'],
-    //         correct: 'City'
-    //     },
-    //     {
-    //         hasContent: false,
-    //         quest: 'Real Madrid is first in the league, and Real Betis is fifth while Osasuna is right between them. If Barcelona has more points than Celta Vigo and Celta Vigo is exactly below Osasuna, who is second?',
-    //         choices: ['Barcelona', 'Osasuna', 'Real Betis', 'Celta Vigo'],
-    //         correct: 'Barcelona'
-    //     },
-    //     {
-    //         hasContent: false,
-    //         quest: 'If the day before yesterday is two days after Monday, then what day is it today?',
-    //         choices: ['Monday', 'Tuesday', 'Wednesday', 'Friday'],
-    //         correct: 'Friday'
-    //     },
-    //     {
-    //         hasContent: false,
-    //         quest: 'Zeta Leonis is both the fifth smallest and fifth largest star in a constellation. How many stars are there?',
-    //         choices: ['8', '9', '10', '11'],
-    //         correct: '9'
-    //     },
-    //     {
-    //         hasContent: false,
-    //         quest: 'Aztecs is to Mexico as Incas is to:',
-    //         choices: ['Chile', 'Peru', 'Brazil', 'Cuba'],
-    //         correct: 'Peru'
-    //     },
-    //     {
-    //         hasContent: false,
-    //         quest: 'Tiger is to stripes as leopard is to:',
-    //         choices: ['Spots', 'Streaks', 'Paws', 'Tail'],
-    //         correct: 'Spots'
-    //     },
-    //     {
-    //         hasContent: true,
-    //         quest: 'Which number follows?',
-    //         content: '3, 9, 6, 12, 9, 15, 12, 18',
-    //         contentType: 'text',
-    //         choices: ['11', '14', '15', '21'],
-    //         correct: '15'
-    //     },
-    //     {
-    //         hasContent: false,
-    //         quest: 'If two typists can type four pages in two minutes, how many typists will it take to type forty pages in ten minutes?',
-    //         choices: ['2', '4', '6', '8'],
-    //         correct: '4'
-    //     },
-    //     {
-    //         hasContent: true,
-    //         quest: 'Rearrange the letters and select the correct category.',
-    //         content: 'F A R E F I G',
-    //         contentType: 'text',
-    //         choices: ['City', 'Fruit', 'Animal', 'Vegetable'],
-    //         correct: 'Animal'
-    //     },
-    //     {
-    //         hasContent: true,
-    //         quest: 'Which letter follows?',
-    //         content: 'T, Q, N, K, H',
-    //         contentType: 'text',
-    //         choices: ['F', 'E', 'D', 'G'],
-    //         correct: 'E'
-    //     },
-    //     {
-    //         hasContent: false,
-    //         quest: 'Part is to trap as net is to:',
-    //         choices: ['Ten', 'Whole', 'Web', 'Cover'],
-    //         correct: 'Ten'
-    //     },
-    // ]
-
     const quiz = {
         astronomy: [
             {
@@ -2455,7 +2350,7 @@ wss.on('connection', (ws) => {
     ws.on('close', () => {
         console.log(`[${lobby[userID]?.name}]\x1b[1;31m Disconnected\x1b[0m 💀`)
 
-        const liveGameID = lobby[userID].gameID
+        const liveGameID = lobby[userID]?.gameID
 
         if (liveGameID) {
             if (games[liveGameID]) {
