@@ -1712,7 +1712,7 @@ const getQuiz = (topic, count) => {
             }
         ],
 
-        tech: [
+        technology: [
             {
                 hasContent: false,
                 quest: 'What does CPU stand for?',

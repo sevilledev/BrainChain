@@ -44,6 +44,10 @@ exports.genGame = (count = 20) => {
             icon: 'planet'
         },
         {
+            name: 'Cinema',
+            icon: 'film'
+        },
+        {
             name: 'Economics',
             icon: 'bar-chart'
         },
@@ -66,6 +70,10 @@ exports.genGame = (count = 20) => {
         {
             name: 'Sports',
             icon: 'basketball'
+        },
+        {
+            name: 'Technology',
+            icon: 'code-slash'
         }
     ]
 

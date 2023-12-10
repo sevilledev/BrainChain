@@ -12,19 +12,23 @@ export const Play = ({ ws, core }) => {
 
     const icons = {
         'Anatomy': 'body',
+        'Art': 'color-palette',
         'Astronomy': 'planet',
+        'Cinema': 'film',
         'Economics': 'bar-chart',
+        'Game': 'game-controller',
         'Geography': 'compass',
         'Mathematics': 'calculator',
         'Mixed': 'earth',
         'Music': 'musical-notes',
-        'Sports': 'basketball'
+        'Sports': 'basketball',
+        'Technology': 'code-slash'
     }
 
 
     const changeFilter = (filter) => {
         if (filter === 'topic') {
-            const topics = ['Anatomy', 'Astronomy', 'Economics', 'Geography', 'Mathematics', 'Mixed', 'Music', 'Sports']
+            const topics = ['Anatomy', 'Astronomy', 'Cinema', 'Economics', 'Game', 'Geography', 'Mathematics', 'Mixed', 'Music', 'Sports', 'Technology']
             let newTopic = topics.at(1 + topics.indexOf(SSIndicator.topic.name) - topics.length)
             STIndicator.topic = { name: newTopic, icon: icons[newTopic] }
         } else if (filter === 'players') {

@@ -52,7 +52,7 @@ export const Controls = ({ core }) => {
         let { topic, players, duration, token } = SSFilters
 
         if (filter === 'topic') {
-            const topics = ['All', 'Anatomy', 'Astronomy', 'Economics', 'Geography', 'Mathematics', 'Mixed', 'Music', 'Sports']
+            const topics = ['All', 'Anatomy', 'Art', 'Astronomy', 'Cinema', 'Economics', 'Game', 'Geography', 'Mathematics', 'Mixed', 'Music', 'Sports', 'Technology']
             topic = topics.at(1 + topics.indexOf(SSFilters.topic) - topics.length)
             STFilters.topic = topic
         } else if (filter === 'players') {
