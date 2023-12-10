@@ -78,7 +78,6 @@ export const App = () => {
     useEffect(() => {
         const interval = setInterval(() => {
             if (ws.readyState === 1) {
-                console.log('useeffect')
                 ws.send(JSON.stringify({ command: 'INIT_PLYR', os: getOS() }))
                 clearInterval(interval)
             }
