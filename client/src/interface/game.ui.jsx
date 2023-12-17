@@ -253,6 +253,8 @@ const Board = ({ core }) => {
     useEffect(() => {
         const stats = []
 
+        console.log(SSIndicator)
+
         SSIndicator.players.list.forEach((player) => {
             stats.push({
                 id: player.id,
@@ -313,6 +315,7 @@ const Board = ({ core }) => {
                                     {player.os === 'iOS' && <Icon name='logo-apple' size={30} color='--white' />}
                                     {player.os === 'Android' && <Icon name='logo-android' size={30} color='--system-green' />}
                                     {player.os === 'PC' && <Icon name='desktop' size={30} color='--system-gray1' />}
+                                    {player.os === 'AI' && <Icon name='dice' size={32} color='--white' />}
                                 </div>
                             </div>
                         )

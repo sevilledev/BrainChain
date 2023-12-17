@@ -9,10 +9,10 @@ import { Alert } from './components/core.cmp'
 const core = {}
 try { document.createEvent('TouchEvent'); core.isMobile = true } catch (e) { core.isMobile = false }
 
-// const ws = new WebSocket(`ws://${window.location.hostname}:50000`)
+const ws = new WebSocket(`ws://${window.location.hostname}:50000`)
 
 // On Production
-const ws = new WebSocket(`wss://${window.location.hostname}`)
+// const ws = new WebSocket(`wss://${window.location.hostname}`)
 
 
 export const App = () => {
@@ -53,6 +53,8 @@ export const App = () => {
             STIndicator.answers = res.answers
         } else if (res.command === 'UPDT_PLYRS') {
             STIndicator.players = res.players
+        } else if (res.command === 'UPDT_BLNC') {
+            STProfile.balance = res.balance
         } else if (res.command === 'FNSH_GAME') {
             setTimeout(() => {
                 if (STProfile.gameID !== '') {
