@@ -27,8 +27,8 @@
     width: 198px;
     height: 198px;
     border-radius: 14px;
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    backdrop-filter: saturate(180%);
+    -webkit-backdrop-filter: saturate(180%);
     overflow: hidden;
 }
 

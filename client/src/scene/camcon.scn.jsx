@@ -16,7 +16,7 @@ export const CamCon = ({ core }) => {
     const cameraOptions = {
         fov: 30,
         near: 0.01,
-        far: 1500
+        far: 50
     }
 
     const orbitOptions = {

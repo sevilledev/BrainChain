@@ -102,7 +102,7 @@ export const Play = ({ ws, core }) => {
                 </AnimatePresence>
 
                 <div className={sty.playWrapper}>
-                    {SSProfile.gameID && <Matrix count={225} width={24} height={24} gap={3} />}
+                    {SSProfile.gameID && <Matrix size={15} gap={3} />}
                     <div className={sty.playGame}>
                         <div className={sty.playHeader}>
                             <Icon name={SSIndicator.topic.icon} size={50} color='--system-yellow' />

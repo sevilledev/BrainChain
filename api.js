@@ -74,7 +74,7 @@ wss.on('connection', (ws) => {
                 isGuest: true,
                 isInLobby: true,
                 gameID: '',
-                balance: 100,
+                balance: 500,
                 color: genColor(),
                 name: `Guest #${Math.round(Math.random() * 10000 - 1).toString().padEnd(4, '0')}`,
                 os: req.os

@@ -1,11 +1,14 @@
 .matrixWrap {
     position: absolute;
     top: 0;
+    width: 100%;
+    height: 100%;
 }
 
 .matrix {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    width: 100%;
+    height: 100%;
 }
 
 @keyframes pulse {

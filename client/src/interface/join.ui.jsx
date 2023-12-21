@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion'
 import { useSnapshot } from 'valtio'
 import { Icon, Matrix } from '../components/core.cmp'
 import { STGames, STProfile } from '../stores/app.store'
@@ -20,11 +21,16 @@ export const Join = ({ ws, core }) => {
             <div className={sty.games} style={{ width: core.isMobile ? '100%' : '80%', gap: core.isMobile ? 25 : 20 }}>
                 {SSGames.filtered.map((game) => {
                     return (
-                        <div className={sty.gameWrapper} key={game.id} style={{ width: core.isMobile ? 160 : 198, height: core.isMobile ? 160 : 198 }}>
+                        <motion.div className={sty.gameWrapper} key={game.id}
+                            style={{ width: core.isMobile ? 160 : 198, height: core.isMobile ? 160 : 198 }}
+                            initial={{ backdropFilter: 'inherit', WebkitBackdropFilter: 'inherit' }}
+                            animate={{ backdropFilter: 'saturate(180%) blur(20px)', WebkitBackdropFilter: 'saturate(180%) blur(20px)' }}
+                            transition={{ duration: 0.3, delay: 0.6 }}
+                        >
                             {SSProfile.gameID === game.id && (
                                 core.isMobile
-                                ? <Matrix count={81} width={16} height={16} gap={2} />
-                                : <Matrix count={100} width={18} height={18} gap={2} />
+                                    ? <Matrix size={9} gap={2} />
+                                    : <Matrix size={10} gap={2} />
                             )}
                             <div className={sty.gameCard} onClick={() => actGame(game)} style={{ transform: core.isMobile ? 'scale(0.8)' : 'none' }}>
                                 <div className={sty.gameHeader}>
@@ -45,11 +51,10 @@ export const Join = ({ ws, core }) => {
                                                 ? <Icon name='person' size={20} color='--primary-tint' key={index} />
                                                 : <Icon name='person-o' size={20} color='--primary-tint' key={index} />
                                         )
-
                                     })}
                                 </div>
                             </div>
-                        </div>
+                        </motion.div>
                     )
                 })}
             </div>
