@@ -4,6 +4,7 @@
     "description": "Brain Chain Game",
     "main": "api.js",
     "scripts": {
+        "start": "node api",
         "dev": "nodemon api",
         "client": "cd client && npm run dev",
         "build": "npm i && cd client && npm i && npm run build && cd ..",
