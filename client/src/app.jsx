@@ -9,10 +9,7 @@ import { Alert } from './components/core.cmp'
 const core = {}
 try { document.createEvent('TouchEvent'); core.isMobile = true } catch (e) { core.isMobile = false }
 
-// const ws = new WebSocket(`ws://${window.location.hostname}:50000`)
-
-// On Production
-const ws = new WebSocket(`wss://${window.location.hostname}`)
+const ws = new WebSocket(`ws://${window.location.hostname}${import.meta.env.VITE_REACT_APP_ENV === 'DEV' && ':50000'}`)
 
 
 export const App = () => {
