@@ -6,10 +6,10 @@ import { Interface } from './interface/core.ui'
 import { Alert } from './components/core.cmp'
 
 
-const core = {}
-try { document.createEvent('TouchEvent'); core.isMobile = true } catch (e) { core.isMobile = false }
-
-core.env = import.meta.env.VITE_REACT_APP_ENV
+const core = {
+    env: import.meta.env.VITE_REACT_APP_ENV,
+    isMobile: 'ontouchend' in document
+}
 
 const ws = new WebSocket(`${core.env === 'PROD' ? 'wss' : 'ws'}://${window.location.hostname}${core.env === 'PROD' ? '' : ':50000'}`)
 
