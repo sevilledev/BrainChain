@@ -5,6 +5,7 @@
     "main": "api.js",
     "scripts": {
         "start": "pm2 start ./api.js --no-daemon",
+        "stop": "pm2 delete all",
         "dev": "nodemon api",
         "client": "cd client && npm run dev",
         "build": "npm i && cd client && npm i && npm run build && cd ..",
