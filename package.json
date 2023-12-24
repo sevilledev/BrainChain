@@ -4,7 +4,7 @@
     "description": "Brain Chain Game",
     "main": "api.js",
     "scripts": {
-        "start": "pm2 start ./api.js",
+        "start": "pm2 start ./api.js --no-daemon",
         "dev": "nodemon api",
         "client": "cd client && npm run dev",
         "build": "npm i && cd client && npm i && npm run build && cd ..",
