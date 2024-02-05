@@ -25,7 +25,7 @@ export const Profile = () => {
     }
 
     const openMenu = () => {
-        STSettings.ui = SSSettings.ui === 'Sign in' ? '' : SSProfile.isGuest ? 'Sign in' : 'Profile'
+        STSettings.ui = STSettings.ui !== '' ? '' : STProfile.isGuest ? 'Sign in' : 'Sign up'
     }
 
     const onSegment = (segment) => {
@@ -44,7 +44,7 @@ export const Profile = () => {
 
     useEffect(() => {
         const handler = (e) => {
-            if (!menuRef.current) return
+            if (!STSettings.ui) return
             if (!menuRef.current.contains(e.target)) STSettings.ui = ''
         }
         document.addEventListener('click', handler, true)
@@ -53,14 +53,14 @@ export const Profile = () => {
 
 
     return (
-        <div className={sty.profile}>
+        <div className={sty.profile} ref={menuRef}>
             <div className={sty.profileBtn} onClick={() => openMenu()}>
                 <Icon name='person-circle-o' size={30} color='--white' />
                 {SSProfile.isGuest && <h5 className={sty.profileLbl}>Guest</h5>}
             </div>
 
             {SSSettings.ui !== '' && <>
-                <div className={sty.menuBg} ref={menuRef}>
+                <div className={sty.menuBg}>
                     <div className={sty.notch}></div>
                     <Segment segments={segments} state={SSSettings.ui} onChange={(index, segment) => onSegment(segment)} />
                     {SSSettings.ui === 'Sign in' && <div className={sty.menu}>
