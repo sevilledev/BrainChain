@@ -10,28 +10,6 @@
     gap: 15px;
 }
 
-.profile {
-    align-items: center;
-    height: 40px;
-    padding: 5px;
-    border-radius: 25px;
-    backdrop-filter: saturate(180%) blur(20px);
-    -webkit-backdrop-filter: saturate(180%) blur(20px);
-    background-color: var(--regular-material);
-    cursor: pointer;
-}
-
-.profile:hover {
-    background-color: var(--thin-material);
-}
-
-.profileLbl {
-    margin: 0 5px;
-    font-size: 15px;
-    font-weight: 600;
-    color: var(--secondary-label);
-}
-
 .balance {
     align-items: center;
     height: 40px;

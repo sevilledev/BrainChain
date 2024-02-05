@@ -1,0 +1,88 @@
+.profile {
+    align-items: center;
+    justify-content: center;
+}
+
+.profileBtn {
+    align-items: center;
+    height: 40px;
+    padding: 5px;
+    border-radius: 25px;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    background-color: var(--regular-material);
+    cursor: pointer;
+}
+
+.profileBtn:hover {
+    background-color: var(--thin-material);
+}
+
+.profileLbl {
+    margin: 0 5px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--secondary-label);
+}
+
+.menuBg {
+    position: absolute;
+    flex-direction: column;
+    align-items: center;
+    top: 70px;
+    padding: 15px;
+    border-radius: 14px;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    background-color: var(--thin-material);
+    z-index: 1;
+}
+
+.handler {
+    position: absolute;
+    width: 200vw;
+    height: 200vh;
+    background-color: #0ff2;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.notch {
+    position: absolute;
+    top: -15px;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    backdrop-filter: saturate(180%) blur(20px);
+    -webkit-backdrop-filter: saturate(180%) blur(20px);
+    background-color: var(--thin-material);
+}
+
+.menu {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.menuInput {
+    align-items: center;
+    font-size: 15px;
+    font-weight: 400;
+    width: 220px;
+    height: 30px;
+    padding: 0 8px;
+    border-radius: 8px;
+    background-color: var(--quarternary-fill);
+    transition: all .3s ease-in-out;
+}
+
+.menuBtn {
+    width: fit-content;
+    height: 30px;
+    margin-top: 15px;
+    padding: 0 20px;
+    border-radius: 8px;
+    background-color: var(--system-blue);
+    font-size: 15px;
+    font-weight: 500;
+}

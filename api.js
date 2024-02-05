@@ -1,5 +1,6 @@
 const { WebSocketServer, WebSocket } = require('ws')
-const { genRandom, genGame, genColor, genQuiz } = require('./helpers/core.helpers')
+const { genRandom, genGame, genColor, genQuiz } = require('./utils/core.utils')
+const { MongoClient } = require('mongodb')
 const { createServer } = require('http')
 const express = require('express')
 const cors = require('cors')
@@ -8,7 +9,8 @@ const path = require('path')
 const app = express()
 const server = createServer(app)
 const wss = new WebSocketServer({ server })
-const PORT = process.env.PORT || 50000
+
+require('dotenv/config')
 
 
 
@@ -52,7 +54,7 @@ const sendUser = (userID, obj) => {
 
 const init = () => {
     console.clear()
-    console.log(`\x1b[33mApp running on 🔥\n\n\x1b[36m  http://localhost:${PORT}  \x1b[0m\n`); wss.on('error', console.error)
+    console.log(`\x1b[33mApp running on 🔥\n\n\x1b[36m  http://localhost:${process.env.PORT}  \x1b[0m\n`); wss.on('error', console.error)
 
     // For generated games
     Object.keys(games).forEach((id) => rooms[id] = {})
@@ -262,6 +264,28 @@ wss.on('connection', (ws) => {
 
 
 
+// Server
+
+let DB
+
+const connectDB = async () => {
+    const client = new MongoClient(process.env.DB_CONNECT)
+    await client.connect()
+    DB = client.db('brch')
+}
+
+
+(async () => await connectDB().then(() => {
+    console.log('Connected to MongoDB')
+    server.listen(process.env.PORT, '0.0.0.0', () => init())
+}).catch((err) => console.log(err)))()
+
+
+
+module.exports.collection = (c) => DB.collection(c)
+
+
+
 // Routes
 
 app.get('/api', (req, res) => res.json({ message: 'From api with love' }))
@@ -269,8 +293,4 @@ app.get('/api', (req, res) => res.json({ message: 'From api with love' }))
 app.use('/', express.static(path.join(`${__dirname}/client/dist`)))
 app.get('*', (req, res) => res.sendFile(path.join(`${__dirname}/client/dist`)))
 
-
-
-// Server
-
-server.listen(PORT, '0.0.0.0', () => init())
+app.use('/auth', require('./routes/auth.routes'))

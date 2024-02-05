@@ -4,6 +4,8 @@ import { useSnapshot } from 'valtio'
 import { STUI, STProfile, STFilters, STGames } from '../stores/app.store'
 import { Icon } from '../components/core.cmp'
 
+import { Profile } from './profile.ui'
+
 import sty from '../styles/modules/controls.module.css'
 
 
@@ -17,16 +19,6 @@ export const Controls = ({ core }) => {
     const activeNavs = useAnimation()
 
     const navs = ['Play', 'Join', 'Discover', 'Tournaments', 'Community']
-
-
-    const Profile = () => {
-        return (
-            <div className={sty.profile}>
-                <Icon name='person-circle-o' size={30} color='--white' />
-                {SSProfile.isGuest && <h5 className={sty.profileLbl}>Guest</h5>}
-            </div>
-        )
-    }
 
 
     const Balance = () => {

@@ -10,6 +10,8 @@ export const STScene = proxy({ name: 'Lobby', state: '' })
 
 export const STProfile = proxy({ id: '', isGuest: true, isInLobby: true, gameID: '', color: '', name: '', balance: 0 })
 
+export const STSettings = proxy({ ui: '' })
+
 export const STFilters = proxy({ topic: 'All', players: 'All', duration: 'All', token: 'All' })
 
 export const STIndicator = proxy({ id: '', topic: { name: 'Anatomy', icon: 'body' }, duration: 5, token: 20, players: { all: 2, joined: 0, list: [] }, answers: {} })
