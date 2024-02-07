@@ -1,7 +1,7 @@
-import { signIn, signUp } from './auth.routes'
+import { signIn, signUp, signOut } from './auth.routes'
 
 
-export const RTAuth = { signIn, signUp }
+export const RTAuth = { signIn, signUp, signOut }
 
 export const API_URL = 'https://brch.azurewebsites.net'
 

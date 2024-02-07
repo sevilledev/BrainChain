@@ -30,7 +30,7 @@
     flex-direction: column;
     align-items: center;
     top: 70px;
-    padding: 15px;
+    padding: 10px;
     border-radius: 14px;
     backdrop-filter: saturate(180%) blur(20px);
     -webkit-backdrop-filter: saturate(180%) blur(20px);
@@ -71,6 +71,7 @@
     width: 220px;
     height: 30px;
     padding: 0 8px;
+    margin: 0 5px;
     border-radius: 8px;
     background-color: var(--quarternary-fill);
     transition: all .3s ease-in-out;
@@ -81,8 +82,59 @@
     height: 30px;
     margin-top: 15px;
     padding: 0 20px;
+    margin-bottom: 5px;
     border-radius: 8px;
     background-color: var(--system-blue);
     font-size: 15px;
     font-weight: 500;
+}
+
+.header {
+    align-items: center;
+    padding: 5px 10px 5px 5px;
+    border-radius: 10px;
+    background-color: var(--quarternary-fill);
+}
+
+.details {
+    flex-direction: column;
+    margin-left: 5px;
+    overflow: hidden;
+}
+
+.username {
+    font-size: 17px;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.email {
+    width: 170px;
+    font-size: 13px;
+    font-weight: 400;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--secondary-label);
+}
+
+.list {
+    width: 100%;
+    padding: 0 10px;
+    margin-top: 10px;
+    border-radius: 10px;
+    background-color: var(--quarternary-fill);
+}
+
+.item {
+    width: 100%;
+    height: 30px;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+}
+
+.itemLbl {
+    font-size: 15px;
+    font-weight: 600;
 }

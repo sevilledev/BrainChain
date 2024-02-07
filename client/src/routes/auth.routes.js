@@ -19,3 +19,13 @@ export const signUp = (username, email, password) => new Promise(async (resolve,
         .then((data) => resolve(data))
         .catch((err) => reject(err))
 })
+
+
+export const signOut = () => new Promise(async (resolve, reject) => {
+    const body = JSON.stringify({ token: localStorage.getItem('RFS_TKN') })
+    const headers = { 'Content-Type': 'application/json' }
+
+    send('/auth/signout', { method: 'DELETE', headers, body })
+        .then((data) => resolve(data))
+        .catch((err) => reject(err))
+})
