@@ -18,7 +18,8 @@ var ws = null
 
 
 const connectWS = () => {
-    ws = new WebSocket(`${core.env === 'PROD' ? 'wss' : 'ws'}://${window.location.hostname}${core.env === 'PROD' ? '' : ':50000'}`)
+    console.log(core.env)
+    ws = new WebSocket(`${core.env === 'DEV' ? 'ws' : 'wss'}://${window.location.hostname}${core.env === 'DEV' ? ':50000' : ''}`)
 
     ws.onmessage = (msg) => {
         const res = JSON.parse(msg.data)
