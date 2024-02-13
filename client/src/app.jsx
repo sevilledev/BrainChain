@@ -1,20 +1,24 @@
 import { useEffect } from 'react'
+import { usePostHog } from 'posthog-js/react'
+
 import { STGame, STGames, STIndicator, STProfile, STScene, STUI } from './stores/app.store'
 
 import { Scene } from './scene/core.scn'
 import { Interface } from './interface/core.ui'
 import { Alert } from './components/core.cmp'
+import { RTAuth } from './routes/routes'
 
 
 const core = {
-    env: import.meta.env.VITE_REACT_APP_ENV,
+    env: import.meta.env.VITE_ENV,
     isMobile: 'ontouchend' in document
 }
 
-const ws = new WebSocket(`${core.env === 'PROD' ? 'wss' : 'ws'}://${window.location.hostname}${core.env === 'PROD' ? '' : ':50000'}`)
+var ws = null
 
 
-export const App = () => {
+const connectWS = () => {
+    ws = new WebSocket(`${core.env === 'PROD' ? 'wss' : 'ws'}://${window.location.hostname}${core.env === 'PROD' ? '' : ':50000'}`)
 
     ws.onmessage = (msg) => {
         const res = JSON.parse(msg.data)
@@ -66,6 +70,20 @@ export const App = () => {
         }
     }
 
+    // ws.onclose = () => {
+    //     ws = null
+    //     setTimeout(() => connectWS(), 1000)
+    // }
+}
+
+
+connectWS()
+
+
+export const App = () => {
+    const posthog = usePostHog()
+
+
     const getOS = () => {
         const UA = navigator.userAgent
         const OS = ['Windows', 'Unix', 'Mac', 'Linux']
@@ -76,13 +94,27 @@ export const App = () => {
     }
 
 
-    useEffect(() => {
+    const refreshToken = async () => {
+        if (localStorage.getItem('IS_GUEST') === 'false') { await RTAuth.refreshToken() }
+        
         const interval = setInterval(() => {
             if (ws.readyState === 1) {
-                ws.send(JSON.stringify({ command: 'INIT_PLYR', os: getOS() }))
+                ws.send(JSON.stringify({ command: 'INIT_PLYR', os: getOS(), token: localStorage.getItem('ACS_TKN') }))
                 clearInterval(interval)
             }
         }, 10)
+    }
+
+    
+    const initPostHog = () => {
+        const id = localStorage.getItem('EMAIL') || 'Guest'
+        posthog.identify(id)
+    }
+
+
+    useEffect(() => {
+        refreshToken()
+        initPostHog()
     }, [])
 
 

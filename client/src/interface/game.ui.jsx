@@ -128,6 +128,7 @@ const Quiz = ({ ws, core }) => {
         STClock.prevTimer = 30 + STGame.quiz.length * 6
     }, [])
 
+
     useEffect(() => {
         interval = setInterval(() => {
             if (SSClock.timer > 0) {

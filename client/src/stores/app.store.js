@@ -8,7 +8,7 @@ export const STPrevUI = proxy({ name: 'Home' })
 
 export const STScene = proxy({ name: 'Lobby', state: '' })
 
-export const STProfile = proxy({ id: '', isInLobby: true, gameID: '', color: '', name: '', balance: 0, isGuest: true })
+export const STProfile = proxy({ id: '', isInLobby: true, gameID: '', color: '', name: '', email: '', balance: 0, isGuest: true })
 
 export const STSettings = proxy({ ui: '' })
 

@@ -1,5 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { useSnapshot } from 'valtio'
+import { usePostHog } from 'posthog-js/react'
 import { STIndicator, STProfile } from '../stores/app.store'
 import { Icon, Matrix } from '../components/core.cmp'
 
@@ -9,6 +10,8 @@ import sty from '../styles/modules/play.module.css'
 export const Play = ({ ws, core }) => {
     const SSIndicator = useSnapshot(STIndicator)
     const SSProfile = useSnapshot(STProfile)
+
+    const posthog = usePostHog()
 
     const icons = {
         'Anatomy': 'body',
@@ -44,10 +47,12 @@ export const Play = ({ ws, core }) => {
     }
 
     const createGame = () => {
+        posthog.capture('Created Game')
         ws.send(JSON.stringify({ command: 'CREATE_GAME', game: { ...SSIndicator }, user: { name: STProfile.name, color: STProfile.color } }))
     }
-
+    
     const leaveGame = () => {
+        posthog.capture('Canceled Game')
         ws.send(JSON.stringify({ command: 'LEAVE_GAME', id: SSProfile.gameID, name: SSProfile.name }))
     }
 

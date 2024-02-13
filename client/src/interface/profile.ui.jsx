@@ -1,13 +1,16 @@
 import { useEffect, useRef, useState } from 'react'
 import { useSnapshot } from 'valtio'
+import { usePostHog } from 'posthog-js/react'
+
+import { STProfile, STSettings } from '../stores/app.store'
+
 import { Icon, Segment } from '../components/core.cmp'
 import { RTAuth } from '../routes/routes'
-import { STProfile, STSettings } from '../stores/app.store'
 
 import sty from '../styles/modules/profile.module.css'
 
 
-export const Profile = () => {
+export const Profile = ({ core }) => {
     const SSProfile = useSnapshot(STProfile)
     const SSSettings = useSnapshot(STSettings)
 
@@ -17,6 +20,8 @@ export const Profile = () => {
 
     const menuRef = useRef()
 
+    const posthog = usePostHog()
+
     const segments = ['Sign in', 'Sign up']
 
 
@@ -25,6 +30,7 @@ export const Profile = () => {
     }
 
     const openMenu = () => {
+        if (!STSettings.ui) posthog.capture('Navigated', { page: 'Profile' })
         STSettings.ui = STSettings.ui ? '' : STProfile.isGuest ? 'Sign up' : 'Profile'
     }
 
@@ -36,35 +42,45 @@ export const Profile = () => {
         RTAuth.signIn(email, password).then((data) => {
             if (data.success) {
                 localStorage.setItem('IS_GUEST', 'false')
+                localStorage.setItem('EMAIL', email)
                 localStorage.setItem('ACS_TKN', data.accessToken)
                 localStorage.setItem('RFS_TKN', data.refreshToken)
                 STProfile.isGuest = false
                 STSettings.ui = ''
+                posthog.identify(email)
+                posthog.capture('Signed in', { email })
+                location.reload()
             }
         })
     }
-
+    
     const signUp = () => {
-        RTAuth.signUp(username, email, password).then((data) => {
+        RTAuth.signUp(username, email, password, STProfile.color).then((data) => {
             if (data.success) {
                 localStorage.setItem('IS_GUEST', 'false')
+                localStorage.setItem('EMAIL', email)
                 localStorage.setItem('ACS_TKN', data.accessToken)
                 localStorage.setItem('RFS_TKN', data.refreshToken)
                 STProfile.isGuest = false
                 STSettings.ui = ''
+                posthog.identify(email)
+                posthog.capture('Signed up', { email })
+                location.reload()
             }
         })
     }
-
+    
     const signOut = () => {
         RTAuth.signOut().then((data) => {
-            console.log(data)
             if (data.success) {
+                posthog.capture('Signed out', { email: localStorage.getItem('EMAIL') })
                 localStorage.removeItem('IS_GUEST')
+                localStorage.removeItem('EMAIL')
                 localStorage.removeItem('ACS_TKN')
                 localStorage.removeItem('RFS_TKN')
                 STProfile.isGuest = true
                 STSettings.ui = ''
+                location.reload()
             }
         })
     }
@@ -84,7 +100,7 @@ export const Profile = () => {
 
 
     return (
-        <div className={sty.profile} ref={menuRef}>
+        <div className={sty.profile} ref={menuRef} style={{ justifyContent: core.isMobile ? 'normal' : 'center' }}>
             <div className={sty.profileBtn} onClick={() => openMenu()}>
                 {SSSettings.ui
                     ? <Icon name='close' size={28} color='--secondary-label' style={{ margin: 1 }} />
@@ -97,7 +113,7 @@ export const Profile = () => {
 
             {SSSettings.ui && <>
                 <div className={sty.menuBg}>
-                    <div className={sty.notch}></div>
+                    <div className={sty.notch} style={{ top: core.isMobile ? '-20px' : '-15px', left: core.isMobile ? '15px' : 'unset' }}></div>
                     {SSProfile.isGuest && <Segment segments={segments} state={SSSettings.ui} onChange={(index, segment) => onSegment(segment)} />}
                     {SSSettings.ui === 'Sign in' && <div className={sty.menu}>
                         <input className={sty.menuInput} style={{ marginTop: 15 }} name='email' placeholder='Email' type='text' value={email} onChange={(e) => onChange(e.target.value, setEmail)} />
@@ -114,8 +130,8 @@ export const Profile = () => {
                         <div className={sty.header}>
                             <Icon name='person-circle-o' size={40} color='--white' />
                             <div className={sty.details}>
-                                <h3 className={sty.username}>seville</h3>
-                                <h5 className={sty.email}>sevillerasulova@gmail.com</h5>
+                                <h3 className={sty.username}>{SSProfile.name}</h3>
+                                <h5 className={sty.email}>{SSProfile.email}</h5>
                             </div>
                         </div>
                         <div className={sty.list}>

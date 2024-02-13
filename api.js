@@ -1,7 +1,8 @@
 const { WebSocketServer, WebSocket } = require('ws')
 const { genRandom, genGame, genColor, genQuiz } = require('./utils/core.utils')
-const { MongoClient } = require('mongodb')
+const { MongoClient, ObjectId } = require('mongodb')
 const { createServer } = require('http')
+const jwt = require('jsonwebtoken')
 const express = require('express')
 const cors = require('cors')
 const path = require('path')
@@ -67,11 +68,11 @@ const init = () => {
 wss.on('connection', (ws) => {
     const userID = genRandom()
 
-    ws.on('message', (msg) => {
+    ws.on('message', async (msg) => {
         const req = JSON.parse(msg)
 
         if (req.command === 'INIT_PLYR') {
-            const user = {
+            const guest = {
                 id: userID,
                 isGuest: true,
                 isInLobby: true,
@@ -82,10 +83,21 @@ wss.on('connection', (ws) => {
                 os: req.os
             }
 
-            Object.assign(ws, user)
+            if (req.token) {
+                const payload = jwt.verify(req.token, process.env.ACS_TKN_SCT)
+                const user = await this.collection('users').findOne({ _id: new ObjectId(payload.sub) })
+                guest._id = user._id
+                guest.name = user.username
+                guest.email = user.email
+                guest.balance = user.balance
+                guest.color = user.color
+                guest.isGuest = false
+            }
+
+            Object.assign(ws, guest)
             lobby[userID] = ws
 
-            ws.send(JSON.stringify({ command: 'INIT_PLYR', user }))
+            ws.send(JSON.stringify({ command: 'INIT_PLYR', user: guest }))
             ws.send(JSON.stringify({ command: 'UPDT_GAMES', games: getArray(games) }))
             console.log(`[${lobby[userID].name}]\x1b[1;32m Joined\x1b[0m 🥳`)
         } else if (req.command === 'JOIN_GAME') {
@@ -220,7 +232,7 @@ wss.on('connection', (ws) => {
         }
     })
 
-    ws.on('close', () => {
+    ws.on('close', async () => {
         console.log(`[${lobby[userID]?.name}]\x1b[1;31m Disconnected\x1b[0m 💀`)
 
         const liveGameID = lobby[userID]?.gameID
@@ -253,6 +265,10 @@ wss.on('connection', (ws) => {
             }
 
             lobby[userID].gameID = ''
+        }
+
+        if (!lobby[userID].isGuest) {
+            await this.collection('users').updateOne({ _id: lobby[userID]._id }, { $set: { balance: lobby[userID].balance } })
         }
 
         delete lobby[userID]

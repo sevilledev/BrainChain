@@ -4,20 +4,22 @@ const jwt = require('jsonwebtoken')
 const joiSchema = require('../utils/joi.utils')
 const { mailSender } = require('../utils/nodemailer.utils')
 const { collection } = require('../api')
+const { ObjectId } = require('mongodb')
 
 require('dotenv/config')
 
 
 
-const genAcsToken = (user) => { return jwt.sign({ sub: user.id }, process.env.ACS_TKN_SCT, { expiresIn: process.env.ACS_TKN_EXP }) }
-const genRfsToken = (user) => { return jwt.sign({ sub: user.id }, process.env.RFS_TKN_SCT, { expiresIn: process.env.RFS_TKN_EXP }) }
+const genAcsToken = (payload) => { return jwt.sign(payload, process.env.ACS_TKN_SCT, { expiresIn: process.env.ACS_TKN_EXP }) }
+const genRfsToken = (payload) => { return jwt.sign(payload, process.env.RFS_TKN_SCT, { expiresIn: process.env.RFS_TKN_EXP }) }
 
 
 
 router.post('/signup', async (req, res) => {
-    const { username, email, password } = req.body
+    const { username, email, password, color } = req.body
 
     const { error } = joiSchema.signup.validate(req.body)
+    console.log(error)
     if (error) return res.status(400).json({ success: false, error: error.details[0].message })
 
     const user = await collection('users').findOne({ email })
@@ -25,9 +27,9 @@ router.post('/signup', async (req, res) => {
 
     try {
         const hash = await argon2.hash(password + process.env.PEPPER, { type: argon2.argon2id, memoryCost: 15360, timeCost: 2 })
-        const newUser = await collection('users').insertOne({ username, email, password: hash, refreshToken: [] })
-        const accessToken = genAcsToken(newUser)
-        const refreshToken = genRfsToken(newUser)
+        const newUser = await collection('users').insertOne({ username, email, password: hash, refreshToken: [], color, balance: 1000 })
+        const accessToken = genAcsToken({ sub: newUser.insertedId })
+        const refreshToken = genRfsToken({ sub: newUser.insertedId })
         collection('users').updateOne({ _id: newUser.insertedId }, { $push: { refreshToken: refreshToken } })
         res.status(200).json({ success: true, accessToken, refreshToken })
     } catch (err) { res.status(500).json({ success: false, err: err }) }
@@ -47,8 +49,8 @@ router.post('/signin', async (req, res) => {
     if (!isMatch) return res.status(400).json({ success: false, error: 'Invalid password' })
 
     try {
-        const accessToken = genAcsToken(user)
-        const refreshToken = genRfsToken(user)
+        const accessToken = genAcsToken({ sub: user._id })
+        const refreshToken = genRfsToken({ sub: user._id })
         collection('users').updateOne({ _id: user._id }, { $push: { refreshToken } })
         res.json({ success: true, accessToken, refreshToken })
     } catch (err) { res.status(500).json({ success: false }) }
@@ -119,7 +121,7 @@ router.post('/refresh', async (req, res) => {
 
     try {
         const payload = jwt.verify(refreshToken, process.env.RFS_TKN_SCT)
-        const accessToken = genAcsToken({ id: payload.sub })
+        const accessToken = genAcsToken({ sub: payload.sub })
         res.json({ success: true, accessToken })
     } catch (err) { return res.status(401).json({ success: false }) }
 })
@@ -132,7 +134,7 @@ router.delete('/signout', async (req, res) => {
 
     try {
         const payload = jwt.verify(refreshToken, process.env.RFS_TKN_SCT)
-        const user = await collection('users').findOne(payload.sub)
+        const user = await collection('users').findOne({ _id: new ObjectId(payload.sub) })
         if (!user.refreshToken.includes(refreshToken)) return res.status(400).json({ success: false, error: 'Invalid refresh token' })
         const refreshTokens = user.refreshToken.filter(token => token !== refreshToken)
         collection('users').updateOne({ _id: user._id }, { $set: { refreshToken: refreshTokens } })

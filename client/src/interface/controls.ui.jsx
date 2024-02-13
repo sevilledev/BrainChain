@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { usePostHog } from 'posthog-js/react'
 import { AnimatePresence, motion, useAnimation } from 'framer-motion'
 import { useSnapshot } from 'valtio'
 import { STUI, STProfile, STFilters, STGames } from '../stores/app.store'
@@ -14,6 +15,8 @@ export const Controls = ({ core }) => {
     const SSGames = useSnapshot(STGames)
     const SSProfile = useSnapshot(STProfile)
     const SSFilters = useSnapshot(STFilters)
+
+    const posthog = usePostHog()
 
     const inActiveNavs = useAnimation()
     const activeNavs = useAnimation()
@@ -69,6 +72,9 @@ export const Controls = ({ core }) => {
 
 
     useEffect(() => {
+        console.log(SSUI.value.name)
+        posthog.capture('Navigated', { page: SSUI.value.name })
+
         if (SSUI.value.name === 'Home') inActiveNavs.start({ width: 'unset', marginRight: '20px', opacity: 1 })
         else {
             inActiveNavs.start({ width: 0, marginRight: 0, opacity: 0 })
@@ -86,7 +92,7 @@ export const Controls = ({ core }) => {
                     exit={{ y: -115 }}
                     transition={{ duration: 0.8, delay: SSUI.history.index === 0 ? 2.2 : 0 }}
                 >
-                    {!core.isMobile && <Profile />}
+                    {!core.isMobile && <Profile core={core} />}
 
                     <div className={sty.navbar} style={{ transform: `scale(${core.isMobile ? 0.60 : 1})` }}>
                         <div className={sty.menu}>
@@ -173,7 +179,7 @@ export const Controls = ({ core }) => {
                     </div>
 
                     {core.isMobile && <div className={sty.mobNav}>
-                        <Profile />
+                        <Profile core={core} />
                         <Balance />
                     </div>}
 

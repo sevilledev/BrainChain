@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion'
 import { useSnapshot } from 'valtio'
+import { usePostHog } from 'posthog-js/react'
 import { Icon, Matrix } from '../components/core.cmp'
 import { STGames, STProfile } from '../stores/app.store'
 
@@ -10,9 +11,13 @@ export const Join = ({ ws, core }) => {
     const SSProfile = useSnapshot(STProfile)
     const SSGames = useSnapshot(STGames)
 
+    const posthog = usePostHog()
+
 
     const actGame = (game) => {
-        ws.send(JSON.stringify({ command: game.id === SSProfile.gameID ? 'LEAVE_GAME' : 'JOIN_GAME', id: game.id, name: SSProfile.name, color: SSProfile.color }))
+        const act = game.id === SSProfile.gameID
+        posthog.capture(act ? 'Left Game' : 'Joined Game')
+        ws.send(JSON.stringify({ command: act ? 'LEAVE_GAME' : 'JOIN_GAME', id: game.id, name: SSProfile.name, color: SSProfile.color }))
     }
 
 
@@ -22,7 +27,7 @@ export const Join = ({ ws, core }) => {
                 {SSGames.filtered.map((game) => {
                     return (
                         <motion.div className={sty.gameWrapper} key={game.id}
-                            style={{ width: core.isMobile ? 160 : 198, height: core.isMobile ? 160 : 198 }}
+                            style={{ width: core.isMobile ? 'calc(50vw - 40px)' : 198, height: core.isMobile ? 'calc(50vw - 40px)' : 198 }}
                             initial={{ backdropFilter: 'inherit', WebkitBackdropFilter: 'inherit' }}
                             animate={{ backdropFilter: 'saturate(180%) blur(20px)', WebkitBackdropFilter: 'saturate(180%) blur(20px)' }}
                             transition={{ duration: 0.3, delay: 0.6 }}
@@ -32,7 +37,7 @@ export const Join = ({ ws, core }) => {
                                     ? <Matrix size={9} gap={2} />
                                     : <Matrix size={10} gap={2} />
                             )}
-                            <div className={sty.gameCard} onClick={() => actGame(game)} style={{ transform: core.isMobile ? 'scale(0.8)' : 'none' }}>
+                            <div className={sty.gameCard} onClick={() => actGame(game)} style={{ width: core.isMobile ? '100%' : 198, height: core.isMobile ? '100%' : 198 }}>
                                 <div className={sty.gameHeader}>
                                     <Icon name={game.topic.icon} size={34} color='--system-yellow' />
                                     <div className={sty.gameToken}>
