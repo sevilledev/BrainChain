@@ -72,7 +72,6 @@ export const Controls = ({ core }) => {
 
 
     useEffect(() => {
-        console.log(SSUI.value.name)
         posthog.capture('Navigated', { page: SSUI.value.name })
 
         if (SSUI.value.name === 'Home') inActiveNavs.start({ width: 'unset', marginRight: '20px', opacity: 1 })
