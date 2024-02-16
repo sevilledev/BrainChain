@@ -85,6 +85,11 @@ export const Profile = ({ core }) => {
         })
     }
 
+    const openUrl = () => {
+        posthog.capture('Opened Form')
+        window.open('https://forms.gle/K57DUV7yh1veC48x5', '_blank')
+    }
+
 
 
     useEffect(() => {
@@ -135,8 +140,14 @@ export const Profile = ({ core }) => {
                             </div>
                         </div>
                         <div className={sty.list}>
+                            <div className={sty.item} onClick={() => openUrl()}>
+                                <h4 className={sty.itemLbl} style={{ color: 'var(--system-blue)' }}>Give Feedback</h4>
+                                <Icon name='reader-o' size={22} color='--system-blue' />
+                            </div>
+                        </div>
+                        <div className={sty.list}>
                             <div className={sty.item} onClick={() => signOut()}>
-                                <h4 className={sty.itemLbl} style={{ color: 'var(--system-red)' }}>Sign out</h4>
+                                <h4 className={sty.itemLbl} style={{ fontWeight: '600', color: 'var(--system-red)' }}>Sign out</h4>
                                 <Icon name='exit-o' size={22} color='--system-red' />
                             </div>
                         </div>
