@@ -107,8 +107,8 @@ export const App = () => {
 
     
     const initPostHog = () => {
-        const id = localStorage.getItem('EMAIL') || 'Guest'
-        posthog.identify(id)
+        const id = localStorage.getItem('EMAIL')
+        if (id) posthog.identify(id)
     }
 
 
