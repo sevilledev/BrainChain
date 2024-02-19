@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useSnapshot } from 'valtio'
 import { usePostHog } from 'posthog-js/react'
 
-import { STProfile, STSettings } from '../stores/app.store'
+import { STApp, STProfile, STSettings } from '../stores/app.store'
 
 import { Icon, Segment } from '../components/core.cmp'
 import { RTAuth } from '../routes/routes'
@@ -11,6 +11,7 @@ import sty from '../styles/modules/profile.module.css'
 
 
 export const Profile = ({ core }) => {
+    const SSApp = useSnapshot(STApp)
     const SSProfile = useSnapshot(STProfile)
     const SSSettings = useSnapshot(STSettings)
 
@@ -49,7 +50,7 @@ export const Profile = ({ core }) => {
                 STSettings.ui = ''
                 posthog.identify(email)
                 posthog.capture('Signed in', { email })
-                location.reload()
+                STApp.render = !SSApp.render
             }
         })
     }
@@ -65,7 +66,7 @@ export const Profile = ({ core }) => {
                 STSettings.ui = ''
                 posthog.identify(email)
                 posthog.capture('Signed up', { email })
-                location.reload()
+                STApp.render = !SSApp.render
             }
         })
     }
@@ -74,13 +75,14 @@ export const Profile = ({ core }) => {
         RTAuth.signOut().then((data) => {
             if (data.success) {
                 posthog.capture('Signed out', { email: localStorage.getItem('EMAIL') })
+                posthog.reset()
                 localStorage.removeItem('IS_GUEST')
                 localStorage.removeItem('EMAIL')
                 localStorage.removeItem('ACS_TKN')
                 localStorage.removeItem('RFS_TKN')
                 STProfile.isGuest = true
                 STSettings.ui = ''
-                location.reload()
+                STApp.render = !SSApp.render
             }
         })
     }

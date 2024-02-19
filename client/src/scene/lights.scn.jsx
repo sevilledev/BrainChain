@@ -1,5 +1,5 @@
-import { useSnapshot } from "valtio"
-import { STIndicator, STScene } from "../stores/app.store"
+import { useSnapshot } from 'valtio'
+import { STIndicator, STScene } from '../stores/app.store'
 
 
 export const Lights = () => {

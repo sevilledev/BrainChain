@@ -1,7 +1,8 @@
 import { useEffect } from 'react'
+import { useSnapshot } from 'valtio'
 import { usePostHog } from 'posthog-js/react'
 
-import { STGame, STGames, STIndicator, STProfile, STScene, STUI } from './stores/app.store'
+import { STGame, STGames, STIndicator, STProfile, STScene, STUI, STApp } from './stores/app.store'
 
 import { Scene } from './scene/core.scn'
 import { Interface } from './interface/core.ui'
@@ -81,6 +82,8 @@ connectWS()
 
 
 export const App = () => {
+    const SSApp = useSnapshot(STApp)
+
     const posthog = usePostHog()
 
 
@@ -115,7 +118,7 @@ export const App = () => {
     useEffect(() => {
         refreshToken()
         initPostHog()
-    }, [])
+    }, [SSApp.render])
 
 
     return (
