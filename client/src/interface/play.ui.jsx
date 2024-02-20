@@ -35,7 +35,7 @@ export const Play = ({ ws, core }) => {
             let newTopic = topics.at(1 + topics.indexOf(SSIndicator.topic.name) - topics.length)
             STIndicator.topic = { name: newTopic, icon: icons[newTopic] }
         } else if (filter === 'players') {
-            const playersCount = [2, 4, 6, 8]
+            const playersCount = [2, 3, 4, 6, 8]
             STIndicator.players.all = playersCount.at(1 + playersCount.indexOf(SSIndicator.players.all) - playersCount.length)
         } else if (filter === 'duration') {
             const durations = [5, 10, 15]
@@ -50,7 +50,7 @@ export const Play = ({ ws, core }) => {
         posthog.capture('Created Game')
         ws.send(JSON.stringify({ command: 'CREATE_GAME', game: { ...SSIndicator }, user: { name: STProfile.name, color: STProfile.color } }))
     }
-    
+
     const leaveGame = () => {
         posthog.capture('Canceled Game')
         ws.send(JSON.stringify({ command: 'LEAVE_GAME', id: SSProfile.gameID, name: SSProfile.name }))
@@ -124,7 +124,7 @@ export const Play = ({ ws, core }) => {
                             {Array(SSIndicator.players.all).fill().map((player, index) => {
                                 return (
                                     index < (SSProfile.gameID ? SSIndicator.players.joined : 1)
-                                        ? <Icon name='person' size={34} color='--primary-tint' key={index} />
+                                        ? <Icon name='person' size={34} color='--system-orange' key={index} />
                                         : <Icon name='person-o' size={34} color='--primary-tint' key={index} />
                                 )
                             })}

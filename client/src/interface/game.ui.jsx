@@ -117,13 +117,20 @@ const Quiz = ({ ws, core }) => {
             STClock.timer += Math.round((SSClock.prevTimer - SSClock.timer) / 2 + 1)
         }
 
-        ws.send(JSON.stringify({ command: 'SEND_ANSR', id: SSProfile.gameID, index: SSGame.questIndex, answer: choice }))
+        let timeSpent = 0
+
+        if (STGame.answers.findIndex(e => !e.hasOwnProperty('result')) === -1) {
+            timeSpent = Date.now() - SSClock.startTime
+        }
+
+        ws.send(JSON.stringify({ command: 'SEND_ANSR', id: SSProfile.gameID, index: SSGame.questIndex, answer: choice, timeSpent }))
 
         setTimeout(() => navigate('forward'), 500)
     }
 
 
     useEffect(() => {
+        STClock.startTime = Date.now()
         STClock.timer = 30 + STGame.quiz.length * 6
         STClock.prevTimer = 30 + STGame.quiz.length * 6
     }, [])
@@ -262,6 +269,7 @@ const Board = ({ core }) => {
                 name: player.name,
                 color: player.color,
                 os: player.os,
+                timeSpent: player.timeSpent,
                 correct: SSIndicator.answers[player.id].filter(a => a.isTrue).length,
                 wrong: SSIndicator.answers[player.id].filter(a => a.isTrue === false).length,
                 empty: SSIndicator.answers[player.id].filter(a => a.isTrue === null).length,
@@ -269,7 +277,7 @@ const Board = ({ core }) => {
             })
         })
 
-        STGame.stats = stats.sort((a, b) => a.wrong - b.wrong).sort((a, b) => b.correct - a.correct)
+        STGame.stats = stats.sort((a, b) => a.timeSpent - b.timeSpent).sort((a, b) => a.wrong - b.wrong).sort((a, b) => b.correct - a.correct)
     }, [SSIndicator.answers, SSIndicator.players])
 
 

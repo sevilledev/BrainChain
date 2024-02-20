@@ -195,7 +195,9 @@ wss.on('connection', (ws) => {
                 sendRoom(req.id, { command: 'UPDT_ANSR', answers: liveGames[req.id].answers })
 
                 if (liveGames[req.id].answers[userID].findIndex(a => a.answer === '') === -1) {
-                    liveGames[req.id].players.list[liveGames[req.id].players.list.findIndex(p => p.id === userID)].isFinished = true
+                    const playerId = liveGames[req.id].players.list.findIndex(p => p.id === userID)
+                    liveGames[req.id].players.list[playerId].isFinished = true
+                    liveGames[req.id].players.list[playerId].timeSpent = req.timeSpent
                     sendRoom(req.id, { command: 'UPDT_PLYRS', players: liveGames[req.id].players })
                 }
             } else {
@@ -213,12 +215,13 @@ wss.on('connection', (ws) => {
                         id: player.id,
                         name: player.name,
                         color: player.color,
+                        timeSpent: player.timeSpent,
                         correct: liveGames[req.id].answers[player.id].filter(a => a.isTrue).length,
-                        wrong: liveGames[req.id].answers[player.id].filter(a => a.isTrue === false).length,
+                        wrong: liveGames[req.id].answers[player.id].filter(a => a.isTrue === false).length
                     })
                 })
 
-                stats = stats.sort((a, b) => a.wrong - b.wrong).sort((a, b) => b.correct - a.correct)
+                stats = stats.sort((a, b) => a.timeSpent - b.timeSpent).sort((a, b) => a.wrong - b.wrong).sort((a, b) => b.correct - a.correct)
 
                 if (lobby[stats[0].id]) {
                     lobby[stats[0].id].balance += liveGames[req.id].players.list.length * liveGames[req.id].token

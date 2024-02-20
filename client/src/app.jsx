@@ -51,6 +51,10 @@ const connectWS = () => {
                 .sort((a, b) => a.duration - b.duration)
                 // .sort((a, b) => (a.players.all - a.players.joined) - (b.players.all - b.players.joined))
                 .sort((a, b) => a.players.all - b.players.all)
+                // .sort((a, b) => {
+                //     if (a.players.list.findIndex(p => p.os !== 'AI') === -1 && b.players.list.findIndex(p => p.os !== 'AI') !== -1) return false
+                //     else return true
+                // })
             STGames.all = games
             STGames.filtered = games
         } else if (res.command === 'UPDT_ANSR') {

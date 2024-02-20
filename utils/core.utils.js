@@ -78,7 +78,7 @@ exports.genGame = (count = 20) => {
     ]
 
     const genPlayers = () => {
-        const all = 2 * Math.floor(1 + Math.random() * 4)
+        const all = [2, 3, 4][Math.floor(Math.random() * 3)]
         const joined = Math.floor(1 + Math.random() * (all - 1))
         const list = names.sort(() => (Math.random() > .5) ? 1 : -1).slice(0, joined).map((name) => { return { id: this.genRandom(), name, color: this.genColor(), os: 'AI', isFinished: true } })
         return { all, joined, list }

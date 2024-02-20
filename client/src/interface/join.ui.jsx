@@ -50,12 +50,11 @@ export const Join = ({ ws, core }) => {
                                     <h5 className={sty.gameDurationLbl}>{game.duration} questions</h5>
                                 </div>
                                 <div className={sty.gamePlayers}>
-                                    {Array(game.players.all).fill().map((player, index) => {
-                                        return (
-                                            index < game.players.joined
-                                                ? <Icon name='person' size={20} color='--primary-tint' key={index} />
-                                                : <Icon name='person-o' size={20} color='--primary-tint' key={index} />
-                                        )
+                                    {game.players.list.map((player, index) => {
+                                        return <Icon name='person' size={20} color={player.os === 'AI' ? '--primary-tint' : '--system-orange' } key={index} />
+                                    })}
+                                    {Array(game.players.all - game.players.joined).fill().map((player, index) => {
+                                        return <Icon name='person-o' size={20} color='--primary-tint' key={index} />
                                     })}
                                 </div>
                             </div>

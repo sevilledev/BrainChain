@@ -51,7 +51,7 @@ export const Controls = ({ core }) => {
             topic = topics.at(1 + topics.indexOf(SSFilters.topic) - topics.length)
             STFilters.topic = topic
         } else if (filter === 'players') {
-            const playersCount = ['All', 2, 4, 6, 8]
+            const playersCount = ['All', 2, 3, 4, 6, 8]
             players = playersCount.at(1 + playersCount.indexOf(SSFilters.players) - playersCount.length)
             STFilters.players = players
         } else if (filter === 'duration') {
