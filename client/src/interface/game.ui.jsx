@@ -176,7 +176,7 @@ const Quiz = ({ ws, core }) => {
                 <div className={sty.quizQuest} style={{ width: core.isMobile ? '100%' : '50%', marginLeft: core.isMobile ? 0 : '50%', transform: core.isMobile ? 'none' : 'translateX(-50%)' }}>
                     <div className={sty.quest} style={{ padding: core.isMobile ? 20 : 0 }}>
                         <h2 className={sty.questLbl} style={{ fontSize: core.isMobile ? 28 : 36 }}>{SSGame.quiz[SSGame.questIndex].quest}</h2>
-                        {SSGame.quiz[SSGame.questIndex].hasContent && <h1 className={sty.questContent} style={{ fontSize: core.isMobile ? 36 : 40 }}>{SSGame.quiz[SSGame.questIndex].content}</h1>}
+                        {/* {SSGame.quiz[SSGame.questIndex].hasContent && <h1 className={sty.questContent} style={{ fontSize: core.isMobile ? 36 : 40 }}>{SSGame.quiz[SSGame.questIndex].content}</h1>} */}
                     </div>
                     <div className={sty.choices} style={{ width: core.isMobile ? '100%' : '70%', padding: core.isMobile ? 20 : 0, gap: core.isMobile ? 20 : 30 }}>
                         {SSGame.quiz[SSGame.questIndex].choices.map((choice, index) => {
@@ -236,7 +236,7 @@ const Finish = () => {
 
 const Winner = () => {
     useEffect(() => {
-        setTimeout(() => { STScene.name = 'Game'; STGame.ui = 'Board' }, 10000)
+        setTimeout(() => { STScene.name = 'Game'; STGame.ui = 'Board' }, 4000)
     }, [])
 
     return <div className={sty.winner}></div>

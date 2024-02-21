@@ -14,8 +14,8 @@ export const Interface = ({ ws, core }) => {
         <>
             <Router>
                 <Home name='Home' />
-                <Play name='Play' ws={ws} core={core} />
-                <Join name='Join' ws={ws} core={core} />
+                <Play name='Create' ws={ws} core={core} />
+                <Join name='Play' ws={ws} core={core} />
                 <Game name='Game' ws={ws} core={core} />
             </Router>
             <Controls core={core} />

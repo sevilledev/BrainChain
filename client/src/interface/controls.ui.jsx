@@ -21,7 +21,7 @@ export const Controls = ({ core }) => {
     const inActiveNavs = useAnimation()
     const activeNavs = useAnimation()
 
-    const navs = ['Play', 'Join', 'Discover', 'Tournaments', 'Community']
+    const navs = ['Play', 'Create', 'Discover', 'Tournaments', 'Community']
 
 
     const Balance = () => {
@@ -112,7 +112,7 @@ export const Controls = ({ core }) => {
                         </div>
 
                         <AnimatePresence>
-                            {SSUI.value.name === 'Join' && <motion.div className={sty.filters}>
+                            {SSUI.value.name === 'Play' && <motion.div className={sty.filters}>
                                 <motion.div className={sty.filter}
                                     variants={filterVt(15, 0)}
                                     initial='initial'
